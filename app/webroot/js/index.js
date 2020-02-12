@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $("button").click(function(){
+    $(".btn").click(function(){
         $(".search").toggle();
     });
 });

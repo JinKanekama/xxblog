@@ -32,3 +32,11 @@
         );
     ?>
 </h2>
+<h2>
+    <?php
+        echo $this->Html->link(
+            "ユーザー関連",
+            array('controller' => 'users', 'action' => 'index')
+        );
+    ?>
+</h2>

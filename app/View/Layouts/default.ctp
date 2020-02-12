@@ -29,6 +29,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->Html->meta('icon');
 
 		echo $this->Html->css('cake.generic');
+		echo $this->Html->css('default');
 
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
@@ -42,31 +43,46 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 <body>
 	<div id="container">
 		<div id="header">
-			<nav class="navbar navbar-expand-sm navbar-dark bg-primary">
-				<ul class="navbar-nav">
-					<li class="nav-item">
-						<?php echo $this->Html->link('Home', array('controller' => 'posts', 'action' => 'index', ), array('class' => 'nav-link')); ?>
-					</li>
-					<li class="nav-item">
-						<?php echo $this->Html->link('Add Post', array('controller' => 'posts', 'action' => 'add', ), array('class' => 'nav-link')); ?>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#">about</a>
-					</li>    
-					<li class="nav-item">
-						<?php echo $this->Html->link('管理画面', array('controller' => 'imports', 'action' => 'index', ), array('class' => 'nav-link')); ?>
-					</li> 
-					<li class="nav-item">
-						<?php echo $this->Html->link('ログアウト', array('controller' => 'users', 'action' => 'logout', ), array('class' => 'nav-link')); ?>
-					</li> 
-				</ul>
+			<nav class="navbar navbar-expand-md navbar-dark" style="background-color:#428BCA;";>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav">
+						<li class="nav-item">
+							<?php echo $this->Html->link('Home', array('controller' => 'posts', 'action' => 'index', ), array('class' => 'nav-link')); ?>
+						</li>
+						<li class="nav-item">
+							<?php echo $this->Html->link('Add Post', array('controller' => 'posts', 'action' => 'add', ), array('class' => 'nav-link')); ?>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">about</a>
+						</li>    
+						<li class="nav-item">
+							<?php echo $this->Html->link('管理画面', array('controller' => 'imports', 'action' => 'index', ), array('class' => 'nav-link')); ?>
+						</li> 
+						<li class="nav-item">
+							<?php echo $this->Html->link('ログアウト', array('controller' => 'users', 'action' => 'logout', ), array('class' => 'nav-link')); ?>
+						</li> 
+						<li class="nav-item">
+							<button type="button" class="btn btn-lg">検索！</button>  
+						</li> 
+					</ul>
+				</div>
 			</nav>
 		</div>
 		<div id="content">
-
+			<?php echo $this->Flash->render('auth'); ?>
 			<?php echo $this->Flash->render(); ?>
-
-			<?php echo $this->fetch('content'); ?>
+			<div class="container">
+				<div class="row">
+					<div class="col-md-1"></div>
+					<div class="col-md-10">
+						<?php echo $this->fetch('content'); ?>
+					</div>
+					<div class="col-md=1"></div>
+				</div>
+			</div>
 		</div>
 		<div id="footer">
 			<?php echo $this->Html->link(

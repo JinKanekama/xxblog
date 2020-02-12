@@ -1,0 +1,14 @@
+/* .navbar{
+    font-size: 14px;
+    height: 40px;
+    margin: 0px 0px;
+    padding: 0px 0px;
+    background-color: #428BCA;
+} */
+
+.nav-item .btn{
+    background-color: #428BCA;
+    height: 40px;
+    color: white;
+    text-align: center;
+}

@@ -55,7 +55,7 @@
             $conditions = $this->Post->parseCriteria($this->passedArgs);
             $this->paginate = array(  
                 'conditions' => $conditions,
-                'limit' => 8 ,
+                'limit' => 4 ,
                 'order' => array('Post.id' => 'asc')
             );
             $this->set('posts', $this->paginate('Post'));  

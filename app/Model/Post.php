@@ -30,6 +30,9 @@
         public $belongsTo = array(
             'Category' => array(
                 'foreignKey' => 'category_id'    //外部キー
+            ),
+            'User' => array(
+                'foreignKey' => 'user_id'
             )
         );
         public $hasMany = array(

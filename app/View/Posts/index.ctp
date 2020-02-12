@@ -1,68 +1,37 @@
 <!-- File: /app/View/Posts/index.ctp -->
 <?PHP echo $this->Html->css('index.css'); ?>
 
+<h1><?php echo $this->Html->link('Blog posts', array('action' => 'index'), array('class' => 'text-dark blog-title')); ?></h1>
+
 <div class="row">
-<div class="col-2"></div>
-<div class="col-6">
-<h1><?php echo $this->Html->link('Blog posts', array('action' => 'index')); ?></h1>
-<?php echo $this->element('pager')?> 
-<table>
-    <tr>
-        <th><?php echo $this->Paginator->sort('Post.id', 'ID')?></th>
-        <th><?php echo $this->Paginator->sort('Post.title', 'タイトル')?></th>
-        <th><?php echo $this->Paginator->sort('Category.name', 'カテゴリー')?></th>
-        <th>タグ</th>
-        <th>アクション</th>
-        <th><?php echo $this->Paginator->sort('Post.created', '作成')?></th>
-    </tr>
+<div class="col-md-8">
+<?php foreach ($posts as $post): ?>
+    <?php //Debugger::dump($post) ;?>
+    <div class="blog-post">
+    <h2>
+    <?php
+        echo $this->Html->link(
+            $post['Post']['title'],
+            array('action' => 'view', $post['Post']['id']),
+            array('class' => 'text-dark post-title')
+        );
+    ?>
+    </h2>
+    <p class="created">
+    <?php echo $post['Post']['created']." by ".$post['User']['username']; ?>
+    </p>
+    <p>
+    <?php echo $post['Post']['body'];?>
+    </p>
+    </div>
+<?php endforeach; ?>
 
-<!-- ここで $posts 配列をループして、投稿情報を表示 -->
 
-    <?php foreach ($posts as $post): ?>
-    <tr>
-        <td><?php echo $post['Post']['id']; ?></td>
-        <td>
-            <?php
-                echo $this->Html->link(
-                    $post['Post']['title'],
-                    array('action' => 'view', $post['Post']['id'])
-                );
-            ?>
-        </td>
-        <td><?php echo $post['Category']['name']; ?></td>
-        <td><?php 
-            foreach($post['Tag'] as $tag)
-               echo $tag['name'], '  '; ?></td>
-        <td>
-            <?php
-                echo $this->Form->postLink(
-                    'Delete',
-                    array('action' => 'delete', $post['Post']['id']),
-                    array('confirm' => 'Are you sure?')
-                );
-            ?>
-            <?php
-                echo $this->Html->link(
-                    'Edit', array('action' => 'edit', $post['Post']['id'])
-                );
-            ?>
-            
-        </td>
-        
-        <td>
-            <?php echo $post['Post']['created']; ?>
-        </td>
-    </tr>
-    <?php endforeach; ?>
-    
-
-</table>
 <?php echo $this->element('pager')?> 
 </div>
-<div class="col-3">
+<div class="col-md-4">
 <?php echo $this->element('search')?> 
 </div>
-<div class="col-1"></div>
 </div>
 
 <!-- index.jsファイル読み込み -->

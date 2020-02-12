@@ -1,7 +1,6 @@
 <?php echo $this->Form->create('Post', array('url' => '/posts/index'));?>  
   
 <fieldset>  
-  <button type="button" class="btn btn-primary btn-lg">検索！</button>  
   <div class="search"> 
     <?php echo $this->Form->input('Post.title', array(  
       'type' => 'text', 'div' => false, 'label' => 'タイトル'));?>
