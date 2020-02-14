@@ -1,21 +1,27 @@
 <?php echo $this->Form->create('Post', array('url' => '/posts/index'));?>  
   
-<fieldset>  
+
   <div class="search"> 
-    <?php echo $this->Form->input('Post.title', array(  
-      'type' => 'text', 'div' => false, 'label' => 'タイトル'));?>
-    <?php echo $this->Form->input('Post.category', array(  
-      'type' => 'text', 'div' => false, 'label' => 'カテゴリー' ));?>
+  <?php
+    echo '<div class="form-group">';
+    echo '<label for="FormControlTile">タイトル</label>';
+    echo $this->Form->input('Post.title', array(  
+      'label' => false, 'class'=>'form-control', 'rows' => '1'));
+    echo '</div>';
+    echo '<div class="form-group">';
+    echo '<label for="FormControlCategory">カテゴリー</label>';
+    echo $this->Form->input('Post.category', array(  
+      'label' => false, 'class'=>'form-control', 'rows' => '1'));
+    echo '</div>';
+    echo $this->Form->input('Post.tag', array( 
+    'type' => 'select', 
+    'multiple'=> 'checkbox',
+    'options' =>  $tagCheck,
+    'label' => 'タグ' 
+    ));  
     
-    <?php echo $this->Form->input('Post.tag', array( 
-      'type' => 'select', 
-      'multiple'=> 'checkbox',
-      'options' =>  $tagCheck,
-      'label' => 'タグ' 
-    ));?>  
- 
-  <?php echo $this->Form->submit('検索', array('div' => false, 'escape' => false));?>  
+    echo '<button type="submit" class="btn btn-primary">検索</button>';
+   ?>  
   </div>
-</fieldset>  
-  
+
 <?php echo $this->Form->end();?> 

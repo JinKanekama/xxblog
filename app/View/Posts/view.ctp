@@ -12,15 +12,15 @@
  <?php  
     $base = "/files/image/name/" ;
     $num = 0;
+    //初期表示画像
     foreach ($post['Image'] as $i) {
     echo $this->Html->image( $base . $i['image_dir'] . "/" . "thumb_".$i['name'] , array('class' => "display", 'id' => "${num}"));
     $num += 1;
     }
 
     $num2 = 0;
+    //modal contents
     foreach ($post['Image'] as $i) {
-      //modal contents
- 
       echo '<div class="popup '.$num2.'">';
       echo '<div class="container">';
       echo '<div class="popup-container row">';
@@ -43,13 +43,19 @@
       echo '</div>';
       echo '</div>';
       echo '</div>';
-
-
       $num2 += 1;
 
     }
  ?>
 
+<?php
+  echo $this->Html->link('編集', array('controller' => 'posts', 'action' => 'edit',$post['Post']['id'] ), array('class' => ''));
+  echo $this->Form->postLink(
+    '削除',
+    array('action' => 'delete', $post['Post']['id']),
+    array('confirm' => 'Are you sure?')
+);
+?>
 
  <?PHP echo $this->Html->script('modal.js'); ?>
  

@@ -54,13 +54,13 @@ class AppController extends Controller {
             'authorize' => array('Controller')
         )
     );
-    
+
     public function isAuthorized($user) {
         // Admin can access every action
         if (isset($user['role']) && $user['role'] === 'admin') {
             return true;
         }
-    
+
         // デフォルトは拒否
         return false;
     }

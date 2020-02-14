@@ -1,15 +1,22 @@
 <!-- app/View/Users/add.ctp -->
 <div class="users form">
 <?php echo $this->Form->create('User'); ?>
-    <fieldset>
-        <legend><?php echo __('Add User'); ?></legend>
-        <?php echo $this->Form->input('username');
-        echo $this->Form->input('password');
-        echo $this->Form->input('role', array(
-            'options' => array('admin' => 'Admin', 'author' => 'Author')
-        ));
+    <h2 class="text-dark">新規登録</h2>
+    <?php 
+    echo '<div class="form-group">';
+    echo '<label for="FormControlUsername">お名前</label>';
+    echo $this->Form->input('username', array('div'=>false, 'label' => false,'class'=>'form-control', 'rows' => '1'));
+    echo '</div>';
+    echo '<div class="form-group">';
+    echo '<label for="FormControlPassword">パスワード</label>';
+    echo $this->Form->password('password', array( 'div'=>false, 'label' => false,'class'=>'form-control', 'rows' => '1'));
+    echo '</div>';
+
+
+    echo $this->Form->input('role', array(
+        'options' => array('admin' => 'Admin', 'author' => 'Author')
+    ));
     ?>
-    </fieldset>
-<?php echo $this->Form->end(__('Submit')); ?>
+<?php echo '<button type="submit" class="btn btn-primary">登録</button>'; ?>
 </div>
 

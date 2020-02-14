@@ -24,7 +24,8 @@
 
             $this->Auth->allow('index', 'view');
         }  
-   
+
+        //承認機能
         public function isAuthorized($user) {
             if ($this->action === 'index') {
                 return true;
@@ -62,8 +63,18 @@
             $tagcheck =  $this->Tag->find( 'list', array( 
                 'fields' => array( 'id', 'name')
             ));
-            
             $this->set( 'tagCheck', $tagcheck);
+            $blogs = $this->Post->find(
+                'all',
+                array(
+                    'order' => array('Post.id' => 'desc'),
+                    'limit' => 10
+                )
+            );
+            $this->set('blogs', $blogs);
+            //serchFormのフラグを立てる
+            $searchForm = 1;
+            $this->set('searchForm', $searchForm);
         }
 
         //詳細表示
@@ -143,23 +154,27 @@
             if ($this->request->is('get')) {
                 throw new MethodNotAllowedException();
             }
+            //postの削除前に変数に格納
             $post = $this->Post->findById($id);
             $images = $post['Image'];
             if ($this->Post->delete($id)) {
-                foreach ($images as $i){
-                    $dir_path = "/var/www/html/blogapp/app/webroot/files/image/name/".$i['image_dir'];
-                    $files = array_diff(scandir($dir_path), array('.','..'));
-                    foreach ($files as $file) {
-                        $file_path =  $dir_path ."/".$file;
-                        if (is_file($file_path)) { 
-                            // ファイルを削除
-                            unlink($file_path);
+                //投稿画像があるか検出
+                if (!empty($images)) {
+                    foreach ($images as $i){
+                        $dir_path = "/var/www/html/blogapp/app/webroot/files/image/name/".$i['image_dir'];
+                        $files = array_diff(scandir($dir_path), array('.','..'));
+                        foreach ($files as $file) {
+                            $file_path =  $dir_path ."/".$file;
+                            if (is_file($file_path)) { 
+                                // ファイルを削除
+                                unlink($file_path);
+                            }
                         }
+                        if (is_dir($dir_path)) {
+                            //ディレクトリを削除
+                            rmdir($dir_path);
+                        } 
                     }
-                    if (is_dir($dir_path)) {
-                        //ディレクトリを削除
-                        rmdir($dir_path);
-                    } 
                 }
                 $this->Flash->success(
                     __('The post with id: %s has been deleted.', h($id))

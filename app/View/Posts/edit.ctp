@@ -5,8 +5,15 @@
 <h1>Edit Post</h1>
 <?php
 echo $this->Form->create('Post');
-echo $this->Form->input('title');
-echo $this->Form->input('body', array('rows' => '3'));
+echo '<div class="form-group">';
+echo '<label for="FormControlTile">タイトル</label>';
+echo $this->Form->input('title', array('label' => false, 'class'=>'form-control', 'rows' => '1'));
+echo '</div>';
+echo '<div class="form-group">';
+echo '<label for="FormControlBody">内容</label>';
+echo $this->Form->input('body', array('label' => false, 'class'=>'form-control', 'rows' => '10'));
+echo '</div>';
 echo $this->Form->input('id', array('type' => 'hidden'));
-echo $this->Form->end('Save Post');
+echo '<button type="submit" class="btn btn-primary">保存</button>';
+echo $this->Form->end();
 ?>

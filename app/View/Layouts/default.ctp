@@ -48,7 +48,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 					<span class="navbar-toggler-icon"></span>
 				</button>
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
-					<ul class="navbar-nav">
+					<ul class="navbar-nav mr-auto">
 						<li class="nav-item">
 							<?php echo $this->Html->link('Home', array('controller' => 'posts', 'action' => 'index', ), array('class' => 'nav-link')); ?>
 						</li>
@@ -58,15 +58,31 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 						<li class="nav-item">
 							<a class="nav-link" href="#">about</a>
 						</li>    
-						<li class="nav-item">
-							<?php echo $this->Html->link('管理画面', array('controller' => 'imports', 'action' => 'index', ), array('class' => 'nav-link')); ?>
-						</li> 
-						<li class="nav-item">
-							<?php echo $this->Html->link('ログアウト', array('controller' => 'users', 'action' => 'logout', ), array('class' => 'nav-link')); ?>
-						</li> 
-						<li class="nav-item">
-							<button type="button" class="btn btn-lg">検索！</button>  
-						</li> 
+						<?php
+							$session = $this->Session->read('Auth.User.id');
+							if (isset($session)){
+								echo '<li class="nav-item">';
+								echo $this->Html->link('MyPage', array('controller' => '', 'action' => '', ), array('class' => 'nav-link'));
+								echo '</li>';
+								echo '<li class="nav-item">';
+								echo $this->Html->link('管理画面', array('controller' => 'imports', 'action' => 'index', ), array('class' => 'nav-link'));
+								echo '</li>';
+								echo '<li class="nav-item">';
+								echo $this->Html->link('ログアウト', array('controller' => 'users', 'action' => 'logout', ), array('class' => 'nav-link'));
+								echo '</li>';
+							} else {
+								echo '<li class="nav-item">';
+								echo $this->Html->link('ログイン', array('controller' => 'users', 'action' => 'login', ), array('class' => 'nav-link'));
+								echo '</li>';
+							}
+						?>
+					</ul>
+					<ul class="navbar-nav">
+						<?php  if(isset($searchForm)):?>
+							<li class="nav-item">
+								<button type="button" class="btn btn-lg">検索！</button>  
+							</li> 
+						<?php endif;?>
 					</ul>
 				</div>
 			</nav>
@@ -85,15 +101,30 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 			</div>
 		</div>
 		<div id="footer">
-			<?php echo $this->Html->link(
-					$this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
-					'https://cakephp.org/',
-					array('target' => '_blank', 'escape' => false, 'id' => 'cake-powered')
-				);
-			?>
-			<p>
-				<?php echo $cakeVersion; ?>
-			</p>
+			<?php //echo $this->Html->link(
+					//$this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
+					//'https://cakephp.org/',
+					//array('target' => '_blank', 'escape' => false, 'id' => 'cake-powered')
+				//);
+			?> 
+			<!-- <p> -->
+				<?php //echo $cakeVersion; ?>
+			<!-- </p> -->
+			<nav class="navbar navbar-expand-md navbar-light" style="background-color:#C0C0C0;";>
+				<ul class="navbar-nav  mr-auto">
+				</ul>
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<?php echo $this->Html->link('お問い合わせ', array('controller' => 'contacts', 'action' => 'contactForm', ), array('class' => 'nav-link')); ?>
+					</li> 
+					<li class="nav-item">
+						<?php echo $this->Html->link('利用規約', array('controller' => '', 'action' => '', ), array('class' => 'nav-link')); ?>
+					</li> 
+					<li class="nav-item">
+						<?php echo $this->Html->link('ヘルプ', array('controller' => '', 'action' => '', ), array('class' => 'nav-link')); ?>
+					</li> 
+				</ul>
+			</nav>
 		</div>
 	</div>
 </body>
