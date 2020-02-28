@@ -50,7 +50,7 @@ class AppController extends Controller {
                 'Form' => array(
                     'passwordHasher' => 'Blowfish'
                 )
-                ),
+            ),
             'authorize' => array('Controller')
         )
     );

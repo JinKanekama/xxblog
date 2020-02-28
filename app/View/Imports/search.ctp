@@ -14,4 +14,4 @@
 </tr>
 </table>
 
-<?PHP echo $this->Html->script('search.js'); ?>
+<?PHP echo $this->Html->script('postSearch.js'); ?>

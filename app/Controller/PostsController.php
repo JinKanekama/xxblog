@@ -1,13 +1,11 @@
 <?php
     class PostsController extends AppController {
-        //searchプラグイン
-        public $name = 'Posts';  
-        public $uses = array('Post', 'Category', 'Tag');  
-        public $components = array('Search.Prg');  
-        public $presetVars = array(  
-            'title' => array('type' => 'value'),  
-            'category' => array('type' => 'value'),  
-            'tag' => array('type' => 'value'),
+        public $uses = array('Post', 'User', 'Good', 'Image') ;
+
+        //プラグイン読み込み
+        public $components = array('Search.Prg','Paginator', 'Session');  
+        public $presetVars = array( 
+            'word' => array('type' => 'value')
           ); 
         public $helpers = array('Html', 'Form');
 
@@ -49,21 +47,7 @@
         
         //投稿一覧表示
         public function index() {
-            $this->loadModel('Tag');
-            $this->Prg->commonProcess();
 
-            
-            $conditions = $this->Post->parseCriteria($this->passedArgs);
-            $this->paginate = array(  
-                'conditions' => $conditions,
-                'limit' => 4 ,
-                'order' => array('Post.id' => 'asc')
-            );
-            $this->set('posts', $this->paginate('Post'));  
-            $tagcheck =  $this->Tag->find( 'list', array( 
-                'fields' => array( 'id', 'name')
-            ));
-            $this->set( 'tagCheck', $tagcheck);
             $blogs = $this->Post->find(
                 'all',
                 array(
@@ -73,12 +57,116 @@
             );
             $this->set('blogs', $blogs);
             //serchFormのフラグを立てる
-            $searchForm = 1;
-            $this->set('searchForm', $searchForm);
+            $searchFlag = 1;
+            $this->set('searchFlag', $searchFlag);
+
+            $news = $this->Post->find(
+                'all',
+                array(
+                    'order' => array('Post.created' => 'desc'),
+                    'limit' => 5
+                )
+            );
+            $this->set('news', $news);
+
+            $animals_news = $this->Post->find(
+                'all',
+                array(
+                    'conditions' => array('Category.name' => 'animal'),
+                    'order' => array('Post.created' => 'desc'),
+                    'limit' => 5
+                )
+            );
+            $this->set('animals_news', $animals_news);
+
+            //hasManyアソシエーションのカウンターをもつバーチャルフィールド 記事ランキング
+            $this->Post->recursive = 1;
+
+            $this->Post->Good->virtualFields['Total'] = 'count(Good.post_id)';
+            $where = array(
+                'fields' => array(
+                    'Post.*',
+                    'count(Good.post_id) AS Good__Total',
+                ),
+                'joins' => array(
+                    array(
+                        'table' => 'goods',
+                        'alias' => 'Good',
+                        'type' => 'LEFT',
+                        'conditions' => array(
+                            'Post.id = Good.post_id'
+                        )
+                        ),
+
+                ),
+                'group' => 'Good.post_id',
+                'limit' => 3,
+                'order' => array(
+                    'Good.Total' => 'desc'
+                )
+            );
+
+            
+            // Paginator に条件を設定
+            $this->paginate = $where;
+
+            // データの取得
+            $ranking = $this->Paginator->paginate();
+            $this->set('ranking', $ranking);
+
+            //hasManyアソシエーションのカウンターをもつバーチャルフィールド ブログランキング
+            $this->User->recursive = -1;
+
+            $this->User->Good->virtualFields['Total'] = 'count(Good.recieved_user_id)';
+            $where2 = array(
+                'fields' => array(
+                    'User.*',
+                    'count(Good.recieved_user_id) AS Good__Total',
+                ),
+                'joins' => array(
+                    array(
+                        'table' => 'goods',
+                        'alias' => 'Good',
+                        'type' => 'LEFT',
+                        'conditions' => array(
+                            'User.id = Good.recieved_user_id'
+                        )
+                        )
+
+                ),
+                'group' => 'Good.recieved_user_id',
+                'limit' => 3,
+                'order' => array(
+                    'Good.Total' => 'desc'
+                )
+            );
+            $this->paginate = $where2;
+
+            // データの取得
+            $ranking2 = $this->Paginator->paginate('User');
+            $this->set('ranking2', $ranking2);
+
+
+        }
+
+        public function searchIndex() {
+            //searchプラグイン
+            $this->Prg->commonProcess();
+            $conditions = $this->Post->parseCriteria($this->passedArgs);
+            $this->paginate = array(  
+                'conditions' => $conditions,
+                'limit' => 5 ,
+                'order' => array('Post.id' => 'asc')
+            );
+            $this->set('posts', $this->paginate('Post'));  
+
+            $searchFlag = 1;
+            $this->set('searchFlag', $searchFlag);
         }
 
         //詳細表示
         public function view($id = null) {
+            //ブログ取得
             if (!$id) {
                 throw new NotFoundException(__('Invalid post'));
             }
@@ -88,6 +176,14 @@
                 throw new NotFoundException(__('Invalid post'));
             }
             $this->set('post', $post);
+            
+           
+            //既にいいねした投稿か調べる
+            $user_id = $this->Session->read('Auth.User.id');
+            $goodFlag = $this->Good->find('count', array(
+                'conditions' => array('Good.post_id' => $id, 'Good.send_user_id' => $user_id)
+            ));
+            $this->set('goodFlag', $goodFlag);
         }
 
 
@@ -108,7 +204,7 @@
                 $this->Post->create();
                 $this->request->data['Post']['user_id'] = $this->Auth->user('id');
                 //デバッグ
-                Debugger::dump($this->request->data['Image']);
+                // Debugger::dump($this->request->data['Image']);
                 //アップロード検証
                 for ($i=0; $i<3; $i++) {
                     if (!$this->Post->isUploadedFile($this->request->data['Image'][$i]['name'])){
@@ -186,6 +282,19 @@
             }
         
             return $this->redirect(array('action' => 'index'));
+        }
+
+        //mypageの表示
+        public function mypage(){
+            $userId = $this->Session->read('Auth.User.id');
+            $this->paginate = array( 
+                'conditions' => array('Post.user_id' => $userId),
+                'limit' => 5,
+                'order' => array('Post.id' => 'asc')
+            );
+            $setting = $this->paginate('Post');
+            $this->set('posts', $this->paginate('Post'));
+
         }
     }
 

@@ -9,7 +9,7 @@ $(function(){
         $('.'+ target).addClass('show').fadeIn();
     });
     //モーダルフェイドアウト 
-    $('.end').on('click',function(){
+    $('.close').on('click',function(){
         $('.popup').fadeOut();
     });
 

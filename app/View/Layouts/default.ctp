@@ -25,9 +25,12 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		<?php echo $cakeDescription ?>:
 		<?php echo $this->fetch('title'); ?>
 	</title>
+	<!-- fontawesome導入 -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"> 
+	<link rel="icon" href="/img/xxblog-logo.png">
 	<?php
-		echo $this->Html->meta('icon');
-
+		//echo $this->Html->meta('icon');
+	
 		echo $this->Html->css('cake.generic');
 		echo $this->Html->css('default');
 
@@ -50,23 +53,33 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav mr-auto">
 						<li class="nav-item">
-							<?php echo $this->Html->link('Home', array('controller' => 'posts', 'action' => 'index', ), array('class' => 'nav-link')); ?>
+							<?php echo $this->Html->link('XXブログ', array('controller' => 'posts', 'action' => 'index', ), array('class' => 'nav-link')); ?>
 						</li>
 						<li class="nav-item">
-							<?php echo $this->Html->link('Add Post', array('controller' => 'posts', 'action' => 'add', ), array('class' => 'nav-link')); ?>
+							<?php echo $this->Html->link('ブログ速報', array('controller' => '', 'action' => '', ), array('class' => 'nav-link')); ?>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">about</a>
-						</li>    
+							<?php echo $this->Html->link('ランキング', array('controller' => '', 'action' => '', ), array('class' => 'nav-link')); ?>
+						</li>
+						<li class="nav-item">
+							<?php echo $this->Html->link('カテゴリ', array('controller' => '', 'action' => '', ), array('class' => 'nav-link')); ?>
+						</li>
 						<?php
 							$session = $this->Session->read('Auth.User.id');
 							if (isset($session)){
 								echo '<li class="nav-item">';
-								echo $this->Html->link('MyPage', array('controller' => '', 'action' => '', ), array('class' => 'nav-link'));
+								echo $this->Html->link('MyPage', array('controller' => 'posts', 'action' => 'mypage', ), array('class' => 'nav-link'));
 								echo '</li>';
 								echo '<li class="nav-item">';
 								echo $this->Html->link('管理画面', array('controller' => 'imports', 'action' => 'index', ), array('class' => 'nav-link'));
 								echo '</li>';
+							} 
+						?>
+					</ul>
+					<ul class="navbar-nav">
+						<?php
+							$session = $this->Session->read('Auth.User.id');
+							if (isset($session)){
 								echo '<li class="nav-item">';
 								echo $this->Html->link('ログアウト', array('controller' => 'users', 'action' => 'logout', ), array('class' => 'nav-link'));
 								echo '</li>';
@@ -74,14 +87,19 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 								echo '<li class="nav-item">';
 								echo $this->Html->link('ログイン', array('controller' => 'users', 'action' => 'login', ), array('class' => 'nav-link'));
 								echo '</li>';
+								echo '<li class="nav-item">';
+								echo $this->Html->link('新規登録', array('controller' => 'users', 'action' => 'add', ), array('class' => 'nav-link'));
+								echo '</li>';
 							}
 						?>
-					</ul>
-					<ul class="navbar-nav">
-						<?php  if(isset($searchForm)):?>
-							<li class="nav-item">
-								<button type="button" class="btn btn-lg">検索！</button>  
-							</li> 
+						<!-- 要修正！ -->
+						<?php  if(isset($searchFlag)):?>
+							<?php echo $this->Form->create('Post', array('url' => '/posts/searchIndex', 'class'=>'form-inline')); ?>						
+					
+								<?php echo $this->Form->input('Post.word', array('div' => false, 'label' => false, 'id' => "sbox1", 'class'=>'form-control', 'rows' => '1'));?><!-- Post.titleのところを修正 -->
+								<button type="submit" id="sbtn1" class="btn btn-outline-light">検索</button>
+			
+							<?php echo $this->Form->end(); ?>
 						<?php endif;?>
 					</ul>
 				</div>
@@ -93,7 +111,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 			<div class="container">
 				<div class="row">
 					<div class="col-md-1"></div>
-					<div class="col-md-10">
+					<div class="col-md-10 content">
 						<?php echo $this->fetch('content'); ?>
 					</div>
 					<div class="col-md=1"></div>
@@ -110,7 +128,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 			<!-- <p> -->
 				<?php //echo $cakeVersion; ?>
 			<!-- </p> -->
-			<nav class="navbar navbar-expand-md navbar-light" style="background-color:#C0C0C0;";>
+			<nav class="navbar navbar-expand navbar-light" style="background-color:#C0C0C0;";>
 				<ul class="navbar-nav  mr-auto">
 				</ul>
 				<ul class="navbar-nav">

@@ -17,4 +17,4 @@ foreach($data as $part) {
 <option>選択してください</option>
 </select>
 
-<?PHP echo $this->Html->script('ajax.js'); ?>
+<?PHP echo $this->Html->script('selectAjax.js'); ?>

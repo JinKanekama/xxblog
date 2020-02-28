@@ -1,7 +1,7 @@
 <!-- app/View/Users/add.ctp -->
 <div class="users form">
 <?php echo $this->Form->create('User'); ?>
-    <h2 class="text-dark">新規登録</h2>
+    <h2>新規登録</h2>
     <?php 
     echo '<div class="form-group">';
     echo '<label for="FormControlUsername">お名前</label>';

@@ -3,7 +3,7 @@
 <div class="users form">
 <?php echo $this->Flash->render('auth'); ?>
 <?php echo $this->Form->create('User'); ?>
-<h2> Please enter your username and password</h2>
+<h2>XXブログログイン</h2>
 <?php 
 echo '<div class="form-group">';
 echo '<label for="FormControlTextarea1">お名前</label>';

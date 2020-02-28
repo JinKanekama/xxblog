@@ -6,6 +6,7 @@
     background-color: #428BCA;
 } */
 
+
 .nav-item .btn{
     background-color: #428BCA;
     height: 40px;
@@ -13,3 +14,10 @@
     text-align: center;
 }
 
+.navbar {
+    font-size: 13px;
+}
+
+#sbox1 {
+    width: 160px; 
+}

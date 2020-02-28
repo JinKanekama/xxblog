@@ -30,7 +30,5 @@ App::uses('Model', 'Model');
  * @package       app.Model
  */
 class AppModel extends Model {
-    // //sessionでuserIDを取得
-    // protected function _getCurrentUser() {
-    // }
+   
 }
