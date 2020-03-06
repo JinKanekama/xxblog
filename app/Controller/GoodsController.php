@@ -3,6 +3,12 @@
         //sessionコンポーネントの読み込み
         public $components = array('Session');  
 
+        public function isAuthorized($user) {
+            // authorにいいねの権限を与える
+            return true;
+            return parent::isAuthorized($user);
+        }
+
         public function ajaxGood() {
             if($this->request->is('ajax')){
                 $this->autoRender = FALSE;

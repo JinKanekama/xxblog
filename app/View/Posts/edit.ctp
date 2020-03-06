@@ -1,5 +1,7 @@
 <!-- File: /app/View/Posts/edit.ctp -->
-<h1>Edit Post</h1>
+<?= $this->assign('title', "編集画面"); ?>
+
+<h1>編集画面</h1>
 <?php
 echo $this->Form->create('Post');
 echo '<div class="form-group">';

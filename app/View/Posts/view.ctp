@@ -1,11 +1,13 @@
 <!-- File: /app/View/Posts/view.ctp -->
 <?PHP echo $this->Html->css('view.css'); ?>
+<?= $this->assign('title', $post['Post']['title']); ?>
+
 
 <h1><?php echo h($post['Post']['title']); ?></h1>
 
 <p><small>Created: <?php echo $post['Post']['created']; ?></small></p>
 
-<p><?php echo h($post['Post']['body']); ?></p>
+<p><?php echo nl2br(h($post['Post']['body'])) ; ?></p>
 
 <!--　画像表示  -->
 <div class="images">
@@ -19,7 +21,7 @@
         echo '<div class="containers row">';
       }
       echo '<div class="display-wrapper col-md-6">';
-      echo $this->Html->image( $base . $i['image_dir'] . "/" .$i['name'] , array('width'=> '100%', 'class' => "display", 'id' => "${num}"));
+      echo $this->CustomHtml->image( $base . $i['image_dir'] . "/" .$i['name'] , array('width'=> '100%', 'class' => "display", 'id' => "${num}"));
       echo '</div>';
       if ($num3 % 2 == 0  || $i == end($post['Image'])) {
         echo '</div>';
@@ -46,7 +48,7 @@
       echo '<div class="rev"><i class="far fa-caret-square-left fa-5x" style="color:white";></i></div>';
       echo '</div>';
       echo '<div class="content-wrapper col-8">';
-      echo $this->Html->image( $base . $i['image_dir'] . "/" . $i['name'] , array('class' => "modalImage"));
+      echo $this->CustomHtml->image($base . $i['image_dir'] . "/" . $i['name'] , array('class' => "modalImage"));
       echo '</div>';
       echo '<div class="col-2 right-content">';
       echo '<div class="next"><i class="far fa-caret-square-right fa-5x" style="color:white";></i></div>';

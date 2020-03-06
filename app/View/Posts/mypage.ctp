@@ -1,21 +1,18 @@
 
 <?php foreach ($posts as $post): ?>
+<?= $this->assign('title', $post['User']['username']."さんのページ"); ?>
 
     <div class="blog-post">
-    <h2>
-    <?php
-        echo $this->Html->link(
-            $post['Post']['title'],
-            array('action' => 'view', $post['Post']['id']),
-            array('class' => 'text-dark post-title')
-        );
-    ?>
-    </h2>
+    <a href="/posts/view/<?=$post['Post']['id']?>" >
+    <h2 class="text-dark post-title" ><?= h($post['Post']['title']) ?></h2>
+    </a>
+
+    
     <p class="created">
-    <?php echo $post['Post']['created']." by ".$post['User']['username']; ?>
+    <?php echo h($post['Post']['created'])." by ".h($post['User']['username']); ?>
     </p>
     <p>
-    <?php echo $post['Post']['body'];?>
+    <?php echo nl2br(h($post['Post']['body']));?>
     </p>
     </div>
 <?php endforeach; ?>

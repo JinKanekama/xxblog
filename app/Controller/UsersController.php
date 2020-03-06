@@ -27,11 +27,11 @@
             if ($this->request->is('post')) {
                 $this->User->create();
                 if ($this->User->save($this->request->data)) {
-                    $this->Flash->success(__('The user has been saved'));
+                    $this->Flash->success(__('ユーザーを登録しました。'));
                     return $this->redirect(array('action' => 'index'));
                 }
                 $this->Flash->error(
-                    __('The user could not be saved. Please, try again.')
+                    __('ユーザーが登録できませんでした。')
                 );
             }
         }
@@ -43,11 +43,11 @@
             }
             if ($this->request->is('post') || $this->request->is('put')) {
                 if ($this->User->save($this->request->data)) {
-                    $this->Flash->success(__('The user has been saved'));
+                    $this->Flash->success(__('編集しました。'));
                     return $this->redirect(array('action' => 'index'));
                 }
                 $this->Flash->error(
-                    __('The user could not be saved. Please, try again.')
+                    __('編集ができませんでした。')
                 );
             } else {
                 $this->request->data = $this->User->findById($id);
@@ -66,25 +66,27 @@
                 throw new NotFoundException(__('Invalid user'));
             }
             if ($this->User->delete()) {
-                $this->Flash->success(__('User deleted'));
+                $this->Flash->success(__('ユーザーを削除しました。'));
                 return $this->redirect(array('action' => 'index'));
             }
-            $this->Flash->error(__('User was not deleted'));
+            $this->Flash->error(__('ユーザーを削除できませんでした。'));
             return $this->redirect(array('action' => 'index'));
         }
 
         
         public function login() {
+            
             if ($this->request->is('post')) {
                 if ($this->Auth->login()) {
                     $this->redirect($this->Auth->Redirect());
                 } else {
-                    $this->Flash->error(__('Invalid username or password, try again'));
+                    $this->Flash->error(__('ユーザー名またはパスワードが違います。'));
                 }
             }
         }
         
         public function logout() {
+            $this->Flash->error(__('ログアウトしました。'));
             $this->redirect($this->Auth->logout());
         }
 

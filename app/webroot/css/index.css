@@ -1,42 +1,83 @@
+/* 全体のレイアウト */
 img {
     object-fit: cover;
 }
 
-.news-contents {
-    margin: 30px 0 0;
-}
-
 h2{
     margin: 0 0 5px;
-    font-size: 40px;
+    font-size: 24px;
     color: #428BCA;
     border-bottom: solid 1px #c0c0c0;
 }
 
 h3{
+    font-size: 18px;
     color: black;
 }
 
 p{
-    font-size: 18px;
+    font-size: 16px;
 }
 
 
-
-.blog-post{
-    margin: 0 0 60px;
+/* スライドショー */
+.carousel-inner{
+    overflow: hidden;
 }
 
-.ranking-contents {
-    margin: 60px 0 0;
+.carousel-inner img {
+    border-radius: 15px;
+    transform: scale(1);
+    transition-duration: 0.3s;
 }
 
-.notice-contents {
-    margin: 20px 0 0;
+/* ブログ速報 */
+.news-contents {
+    margin: 30px 0 0;
+}
+
+.news-contents h2{
+    margin: 0 0 15px;
+}
+/* left-contents */
+.news-left-contents .nav-item .nav-link{
+    color: #000000;
+}
+
+.news-left-contents ul{
+    border-bottom: solid 3px #428BCA;
+}
+
+.news-left-contents .nav-item .active{
+    background-color: #428BCA;
+    border-bottom: solid 1px #428BCA;
+    color: white;
+}
+
+.news-left-contents a:hover{
+    background-color: #EBF5FB ;
+}
+
+.news-left-contents .title-box{
+    padding: 0;
+}
+
+.news-left-contents .author-box{
+    position: relative;
+}
+
+.author-box .author{
+    position: absolute;
+    right: 15px;
+    bottom: 0;
+}
+
+.news-contents .nav-item {
+    font-size: 16px;
 }
 
 .tab-content a{
-    font-size: 18px;
+    font-size: 16px;
     display: block;
     padding:22px 0 0;
     color: #333333;
@@ -52,42 +93,100 @@ p{
     margin-right: 10px;
     color: #E77D00;
     font-style: italic;
-    font-weight: lighter;
 }
 .tab-content .author{
     float:right;
     font-weight: lighter;}
 
-.notice-contents{
-    margin: 60px 0;
+/* right-contents */
+.news-right-contents a{
+    text-decoration: none;
 }
 
-.ranking-wrapper p{
-    margin: 0 0 8px;
+.news-right-contents .col-6{
+    padding: 7px;
 }
 
-.news-right-wrapper p{
+.news-right-wrapper:hover{
+    background-color: #EBF5FB ;
+}
+
+
+.news-right-wrapper{
+    padding:0;
+    margin: 5px 0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.news-right-wrapper .news-category{
     font-size: 16px;
     margin: 0 0 ;
     color: #000000;
-    font-weight: bold;
 }
 
-.news-right-wrapper span{
+.news-right-wrapper .title{
     font-size: 12px;
+    line-height: 15px;
+    color:#666666;
 }
 
-.news-right-wrapper{
-    margin: 5px 0;
-    height: 48%;
-    border-radius: 10px;
-    overflow:hidden;
+.news-right-contents .left{
+    padding-left: 15px;
 }
 
-.news-right-contents {
-    padding: 0 30px;
+.news-right-contents .right{
+    padding-right: 15px;
 }
 
-.news-right-contents a{
+
+
+
+/* ランキング */
+
+.ranking-contents {
+    margin: 30px 0 0;
+}
+
+.ranking-contents h3{
+    margin: 15px 0 15px;
+}
+
+.ranking-contents .row{
+    padding-bottom: 15px;
+    border-bottom: solid 0.5px #c0c0c0;
+    margin: 0 8px;
+}
+
+.ranking-wrapper p{
+    color: #000000;
+    text-align: center;
+    margin: 0;
+}
+
+.ranking-contents .ranking-title{
+    font-size: 12px;
+    line-height: 15px;
+}
+
+.ranking-wrapper a{
     text-decoration: none;
+
+}
+
+.ranking-wrapper img{
+    border-radius: 5px;
+
+}
+
+
+/* お知らせ */
+.notice-contents{
+    margin: 30px 0 0;
+}
+
+.notice-wrapper{
+    margin: 0 10px;
+    border-bottom: solid 0.5px #c0c0c0;
+
 }

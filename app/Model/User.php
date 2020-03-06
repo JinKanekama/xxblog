@@ -11,6 +11,16 @@
             ),
             'Good' => array(
                 'foreignKey' => 'send_user_id',
+            ),
+            'Icon' => array(
+                'foreignKey'  => 'user_id',
+            )
+            
+        );
+
+        public $hasOne = array(
+            'Profile' => array(
+                'foreignKey' => 'user_id'
             )
         );
 

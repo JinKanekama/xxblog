@@ -32,19 +32,22 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller {
     //...
+    // public $helpers = array(
+    //     'Html' => array('className' => 'CustomHtml')
+    // );
 
     public $components = array(
         'Flash',
         'DebugKit.Toolbar',
         'Auth' => array(
+            'authError' => '権限のない操作が要求されました',
             'loginRedirect' => array(
                 'controller' => 'posts',
                 'action' => 'index'
             ),
             'logoutRedirect' => array(
-                'controller' => 'pages',
-                'action' => 'display',
-                'home'
+                'controller' => 'users',
+                'action' => 'login'
             ),
             'authenticate' => array(
                 'Form' => array(

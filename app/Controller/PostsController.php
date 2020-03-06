@@ -20,7 +20,7 @@
             );  
             $this->set('pager_numbers', $pager_numbers);  
 
-            $this->Auth->allow('index', 'view');
+            $this->Auth->allow('index', 'view', 'searchBlogs', 'news', 'rankings');
         }  
 
         //承認機能
@@ -60,6 +60,7 @@
             $searchFlag = 1;
             $this->set('searchFlag', $searchFlag);
 
+            //総合速報
             $news = $this->Post->find(
                 'all',
                 array(
@@ -69,6 +70,7 @@
             );
             $this->set('news', $news);
 
+            //動物速報
             $animals_news = $this->Post->find(
                 'all',
                 array(
@@ -78,6 +80,28 @@
                 )
             );
             $this->set('animals_news', $animals_news);
+            
+            //プログラミング速報
+            $programmings_news = $this->Post->find(
+                'all',
+                array(
+                    'conditions' => array('Category.name' => 'programming'),
+                    'order' => array('Post.created' => 'desc'),
+                    'limit' => 1
+                )
+            );
+            $this->set('programmings_news', $programmings_news);
+
+            //その他の速報
+            $others_news = $this->Post->find(
+                'all',
+                array(
+                    'conditions' => array('Category.name' => 'others'),
+                    'order' => array('Post.created' => 'desc'),
+                    'limit' => 1
+                )
+            );
+            $this->set('others_news', $others_news);
 
             //hasManyアソシエーションのカウンターをもつバーチャルフィールド 記事ランキング
             $this->Post->recursive = 1;
@@ -96,11 +120,15 @@
                         'conditions' => array(
                             'Post.id = Good.post_id'
                         )
-                        ),
-
+                    )
+                ),
+                'conditions' => array(
+                    'NOT' => array(
+                        'Good.post_id' => NULL
+                    )
                 ),
                 'group' => 'Good.post_id',
-                'limit' => 3,
+                'limit' => 8,
                 'order' => array(
                     'Good.Total' => 'desc'
                 )
@@ -134,8 +162,13 @@
                         )
 
                 ),
+                'conditions' => array(
+                    'NOT' => array(
+                        'Good.recieved_user_id' => NULL
+                    )
+                ),
                 'group' => 'Good.recieved_user_id',
-                'limit' => 3,
+                'limit' => 4,
                 'order' => array(
                     'Good.Total' => 'desc'
                 )
@@ -146,10 +179,17 @@
             $ranking2 = $this->Paginator->paginate('User');
             $this->set('ranking2', $ranking2);
 
+            $this->User->recursive = 1;
+            $icons = array();
+            for ($i=0; $i < 4; $i++) {
+            $bloger = $this->User->findById($ranking2[$i]['User']['id']);
+            $icons[] = $bloger['Icon'];
+            }
 
+            $this->set('icons', $icons);
         }
 
-        public function searchIndex() {
+        public function searchBlogs() {
             //searchプラグイン
             $this->Prg->commonProcess();
             $conditions = $this->Post->parseCriteria($this->passedArgs);
@@ -162,6 +202,7 @@
 
             $searchFlag = 1;
             $this->set('searchFlag', $searchFlag);
+            $this->set('keyword', $this->passedArgs);
         }
 
         //詳細表示
@@ -213,10 +254,11 @@
                 }
                 if ($this->Post->saveAll($this->request->data, array('deep' => true))) {
                     
-                    $this->Flash->success(__('Your post has been saved.'));
-                    return $this->redirect(array('action' => 'index'));
+                    $this->Flash->success(__('投稿しました。'));
+                    return $this->redirect(array('action' => 'add'));
                     
-                }  
+                } 
+                $this->Flash->error(__('投稿できませんでした。')); 
             }
         }
 
@@ -234,12 +276,13 @@
             if ($this->request->is(array('post', 'put'))) {
                 $this->Post->id = $id;
                 if ($this->Post->save($this->request->data)) {
-                    $this->Flash->success(__('Your post has been updated.'));
+                    $this->Flash->success(__('更新しました'));
                     return $this->redirect(array('action' => 'index'));
                 }
-                $this->Flash->error(__('Unable to update your post.'));
+                $this->Flash->error(__('更新できませんでした。'));
             }
-        
+            
+            //edit画面のフォームに入る初期値設定
             if (!$this->request->data) {
                 $this->request->data = $post;
             }
@@ -253,7 +296,7 @@
             //postの削除前に変数に格納
             $post = $this->Post->findById($id);
             $images = $post['Image'];
-            if ($this->Post->delete($id)) {
+            if ($this->Post->delete($id, true)) {
                 //投稿画像があるか検出
                 if (!empty($images)) {
                     foreach ($images as $i){
@@ -273,11 +316,11 @@
                     }
                 }
                 $this->Flash->success(
-                    __('The post with id: %s has been deleted.', h($id))
+                    __('削除されました。', h($id))
                 );
             } else {
                 $this->Flash->error(
-                    __('The post with id: %s could not be deleted.', h($id))
+                    __('削除できませんでした。', h($id))
                 );
             }
         
@@ -293,10 +336,125 @@
                 'order' => array('Post.id' => 'asc')
             );
             $setting = $this->paginate('Post');
-            $this->set('posts', $this->paginate('Post'));
+            $this->set('posts', $setting);
 
         }
-    }
 
+        //速報ページ
+        public function news($category){
+            if (!$category) {
+                throw new NotFoundException(__('Invalid posts'));
+            }
+            //カテゴリー別速報
+            if ($category == "total") {
+                $this->paginate = array( 
+                        'limit' => 20,
+                        'order' => array('Post.id' => 'desc')
+                    );
+                $setting = $this->paginate('Post');
+            } else {
+                $this->paginate = array( 
+                    'conditions' => array('Category.name' => $category),
+                    'limit' => 20,
+                    'order' => array('Post.id' => 'desc')
+                );
+                $setting = $this->paginate('Post');
+            }
+            
+            if (!$setting) {
+                throw new NotFoundException(__('Invalid posts'));
+            }
+            $this->set('news', $setting);
+    
+        }
+
+        //ランキングページ
+        public function rankings($category){
+            if (!$category) {
+                throw new NotFoundException(__('Invalid posts 1'));
+            }
+            $this->Post->recursive = 2;
+
+            if ($category == "total") {
+                $this->Post->Good->virtualFields['Total'] = 'count(Good.post_id)';
+                $where = array(
+                    'fields' => array(
+                        'Post.*',
+                        'count(Good.post_id) AS Good__Total',
+                    ),
+                    'joins' => array(
+                        array(
+                            'table' => 'goods',
+                            'alias' => 'Good',
+                            'type' => 'LEFT',
+                            'conditions' => array(
+                                'Post.id = Good.post_id'
+                            )
+                            ),
+
+                    ),
+                    'conditions' => array(
+                        'NOT' => array(
+                            'Good.post_id' => NULL
+                        )
+                    ),
+                    'group' => 'Good.post_id',
+                    'limit' => 20,
+                    'order' => array(
+                        'Good.Total' => 'desc'
+                    )
+                );
+
+                
+                // Paginator に条件を設定
+                $this->paginate = $where;
+
+                // データの取得
+                $rankings = $this->Paginator->paginate();
+            } else {
+                $this->Post->Good->virtualFields['Total'] = 'count(Good.post_id)';
+                $where = array(
+                    'fields' => array(
+                        'Post.*',
+                        'count(Good.post_id) AS Good__Total',
+                    ),
+                    'joins' => array(
+                        array(
+                            'table' => 'goods',
+                            'alias' => 'Good',
+                            'type' => 'LEFT',
+                            'conditions' => array(
+                                'Post.id = Good.post_id'
+                            )
+                            ),
+
+                    ),
+                    'conditions' => array(
+                        'Category.name' => $category,
+                        'NOT' => array(
+                            'Good.post_id' => NULL
+                        )
+                    ),
+                    'group' => 'Good.post_id',
+                    'limit' => 20,
+                    'order' => array(
+                        'Good.Total' => 'desc'
+                    )
+                );
+
+                
+                // Paginator に条件を設定
+                $this->paginate = $where;
+
+                // データの取得
+                $rankings = $this->Paginator->paginate();
+            }
+            
+            if (!$rankings) {
+                throw new NotFoundException(__('Invalid posts 2'));
+            }
+            $this->set('rankings', $rankings);
+        }
+    }
 
 ?>

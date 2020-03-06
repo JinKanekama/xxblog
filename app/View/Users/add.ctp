@@ -1,4 +1,8 @@
 <!-- app/View/Users/add.ctp -->
+<?= $this->Html->css('register.css'); ?>
+<?= $this->assign('title', '新規登録'); ?>
+
+
 <div class="users form">
 <?php echo $this->Form->create('User'); ?>
     <h2>新規登録</h2>

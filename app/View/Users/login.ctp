@@ -1,4 +1,6 @@
 <!-- app/View/Users/login.ctp -->
+<?= $this->Html->css('register.css'); ?>
+<?= $this->assign('title', 'ログイン'); ?>
 
 <div class="users form">
 <?php echo $this->Flash->render('auth'); ?>

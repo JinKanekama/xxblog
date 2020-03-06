@@ -14,7 +14,7 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
-$cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework');
+
 $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 ?>
 <!DOCTYPE html>
@@ -22,7 +22,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 <head>
 	<?php echo $this->Html->charset(); ?>
 	<title>
-		<?php echo $cakeDescription ?>:
 		<?php echo $this->fetch('title'); ?>
 	</title>
 	<!-- fontawesome導入 -->
@@ -44,6 +43,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	?>
 </head>
 <body>
+  <div id="wrapper">
 	<div id="container">
 		<div id="header">
 			<nav class="navbar navbar-expand-md navbar-dark" style="background-color:#428BCA;";>
@@ -56,10 +56,10 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 							<?php echo $this->Html->link('XXブログ', array('controller' => 'posts', 'action' => 'index', ), array('class' => 'nav-link')); ?>
 						</li>
 						<li class="nav-item">
-							<?php echo $this->Html->link('ブログ速報', array('controller' => '', 'action' => '', ), array('class' => 'nav-link')); ?>
+							<a href="/posts/news/total" class="nav-link">ブログ速報</a>
 						</li>
 						<li class="nav-item">
-							<?php echo $this->Html->link('ランキング', array('controller' => '', 'action' => '', ), array('class' => 'nav-link')); ?>
+							<a href="/posts/rankings/total" class="nav-link">ランキング</a>
 						</li>
 						<li class="nav-item">
 							<?php echo $this->Html->link('カテゴリ', array('controller' => '', 'action' => '', ), array('class' => 'nav-link')); ?>
@@ -68,7 +68,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 							$session = $this->Session->read('Auth.User.id');
 							if (isset($session)){
 								echo '<li class="nav-item">';
-								echo $this->Html->link('MyPage', array('controller' => 'posts', 'action' => 'mypage', ), array('class' => 'nav-link'));
+								echo $this->Html->link('MyPage', array('controller' => 'profiles', 'action' => 'mypage', ), array('class' => 'nav-link'));
 								echo '</li>';
 								echo '<li class="nav-item">';
 								echo $this->Html->link('管理画面', array('controller' => 'imports', 'action' => 'index', ), array('class' => 'nav-link'));
@@ -76,9 +76,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 							} 
 						?>
 					</ul>
-					<ul class="navbar-nav">
+					<ul class="navbar-nav nav-right">
 						<?php
-							$session = $this->Session->read('Auth.User.id');
 							if (isset($session)){
 								echo '<li class="nav-item">';
 								echo $this->Html->link('ログアウト', array('controller' => 'users', 'action' => 'logout', ), array('class' => 'nav-link'));
@@ -94,7 +93,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 						?>
 						<!-- 要修正！ -->
 						<?php  if(isset($searchFlag)):?>
-							<?php echo $this->Form->create('Post', array('url' => '/posts/searchIndex', 'class'=>'form-inline')); ?>						
+							<?php echo $this->Form->create('Post', array('url' => '/posts/searchBlogs', 'class'=>'form-inline')); ?>						
 					
 								<?php echo $this->Form->input('Post.word', array('div' => false, 'label' => false, 'id' => "sbox1", 'class'=>'form-control', 'rows' => '1'));?><!-- Post.titleのところを修正 -->
 								<button type="submit" id="sbtn1" class="btn btn-outline-light">検索</button>
@@ -110,24 +109,15 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 			<?php echo $this->Flash->render(); ?>
 			<div class="container">
 				<div class="row">
-					<div class="col-md-1"></div>
-					<div class="col-md-10 content">
+					<div class="col-md-1 container-items"></div>
+					<div class="col-md-10 center">
 						<?php echo $this->fetch('content'); ?>
 					</div>
-					<div class="col-md=1"></div>
+					<div class="col-md-1 container-items"></div>
 				</div>
 			</div>
 		</div>
 		<div id="footer">
-			<?php //echo $this->Html->link(
-					//$this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
-					//'https://cakephp.org/',
-					//array('target' => '_blank', 'escape' => false, 'id' => 'cake-powered')
-				//);
-			?> 
-			<!-- <p> -->
-				<?php //echo $cakeVersion; ?>
-			<!-- </p> -->
 			<nav class="navbar navbar-expand navbar-light" style="background-color:#C0C0C0;";>
 				<ul class="navbar-nav  mr-auto">
 				</ul>
@@ -144,6 +134,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 				</ul>
 			</nav>
 		</div>
-	</div>
+  </div><!-- </div>end <wrapper> -->
 </body>
 </html>
