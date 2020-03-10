@@ -1,11 +1,14 @@
 <?php
     class PostsController extends AppController {
-        public $uses = array('Post', 'User', 'Good', 'Image') ;
+        public $uses = array('Post', 'User', 'Good', 'Image', 'Category', 'Tag') ;
 
         //プラグイン読み込み
         public $components = array('Search.Prg','Paginator', 'Session');  
         public $presetVars = array( 
-            'word' => array('type' => 'value')
+            'word' => array('type' => 'value'),
+            'title' => array('type' => 'value'),  
+            'category' => array('type' => 'value'),  
+            'tag' => array('type' => 'value'),
           ); 
         public $helpers = array('Html', 'Form');
 
@@ -20,7 +23,7 @@
             );  
             $this->set('pager_numbers', $pager_numbers);  
 
-            $this->Auth->allow('index', 'view', 'searchBlogs', 'news', 'rankings');
+            $this->Auth->allow('index', 'view', 'searchBlogs', 'news', 'rankings', 'user');
         }  
 
         //承認機能
@@ -74,7 +77,7 @@
             $animals_news = $this->Post->find(
                 'all',
                 array(
-                    'conditions' => array('Category.name' => 'animal'),
+                    'conditions' => array('Category.id' => 1),
                     'order' => array('Post.created' => 'desc'),
                     'limit' => 5
                 )
@@ -85,7 +88,7 @@
             $programmings_news = $this->Post->find(
                 'all',
                 array(
-                    'conditions' => array('Category.name' => 'programming'),
+                    'conditions' => array('Category.id' => 2),
                     'order' => array('Post.created' => 'desc'),
                     'limit' => 1
                 )
@@ -96,7 +99,7 @@
             $others_news = $this->Post->find(
                 'all',
                 array(
-                    'conditions' => array('Category.name' => 'others'),
+                    'conditions' => array('Category.id' => 3),
                     'order' => array('Post.created' => 'desc'),
                     'limit' => 1
                 )
@@ -128,7 +131,7 @@
                     )
                 ),
                 'group' => 'Good.post_id',
-                'limit' => 8,
+                'limit' => 4,
                 'order' => array(
                     'Good.Total' => 'desc'
                 )
@@ -143,8 +146,6 @@
             $this->set('ranking', $ranking);
 
             //hasManyアソシエーションのカウンターをもつバーチャルフィールド ブログランキング
-            $this->User->recursive = -1;
-
             $this->User->Good->virtualFields['Total'] = 'count(Good.recieved_user_id)';
             $where2 = array(
                 'fields' => array(
@@ -178,15 +179,6 @@
             // データの取得
             $ranking2 = $this->Paginator->paginate('User');
             $this->set('ranking2', $ranking2);
-
-            $this->User->recursive = 1;
-            $icons = array();
-            for ($i=0; $i < 4; $i++) {
-            $bloger = $this->User->findById($ranking2[$i]['User']['id']);
-            $icons[] = $bloger['Icon'];
-            }
-
-            $this->set('icons', $icons);
         }
 
         public function searchBlogs() {
@@ -195,14 +187,25 @@
             $conditions = $this->Post->parseCriteria($this->passedArgs);
             $this->paginate = array(  
                 'conditions' => $conditions,
-                'limit' => 5 ,
-                'order' => array('Post.id' => 'asc')
+                'limit' => 10 ,
+                'order' => array('Post.id' => 'asc'),
+                'recursive' => 2
             );
             $this->set('posts', $this->paginate('Post'));  
 
             $searchFlag = 1;
             $this->set('searchFlag', $searchFlag);
             $this->set('keyword', $this->passedArgs);
+
+            $tagcheck =  $this->Tag->find( 'list', array( 
+                'fields' => array( 'id', 'name')
+            ));
+            
+            $this->set( 'tagCheck', $tagcheck);
+            }
+
+        public function searchDetails(){
+
         }
 
         //詳細表示
@@ -211,7 +214,7 @@
             if (!$id) {
                 throw new NotFoundException(__('Invalid post'));
             }
-    
+            $this->Post->recursive = 2;
             $post = $this->Post->findById($id);
             if (!$post) {
                 throw new NotFoundException(__('Invalid post'));
@@ -327,12 +330,153 @@
             return $this->redirect(array('action' => 'index'));
         }
 
+        //速報ページ
+        public function news($category_id){
+            $category_name;
+            if (!$category_id) {
+                throw new NotFoundException(__('Invalid posts'));
+            }
+            //カテゴリー別速報
+            if ($category_id == "total") {
+                $this->paginate = array( 
+                        'limit' => 20,
+                        'order' => array('Post.id' => 'desc'),
+                        'recursive' => 2
+                    );
+                $setting = $this->paginate('Post');
+                $category_name = "総合";
+            } else {
+                $this->paginate = array( 
+                    'conditions' => array('Category.id' => $category_id),
+                    'limit' => 20,
+                    'order' => array('Post.id' => 'desc'),
+                    'recursive' => 2
+                );
+                $setting = $this->paginate('Post');
+                $category = $this->Category->find('first', array(
+                    'fields' => 'Category.name',
+                    'conditions' => array('Category.id' => $category_id)
+                ));
+                $category_name = $category['Category']['name'];
+            }
+            
+            if (!$setting) {
+                throw new NotFoundException(__('Invalid posts'));
+            }
+            $this->set('news', $setting);
+            $this->set('category_name', $category_name);
+            
+            //カテゴリー一覧取得
+            $category_list = $this->Category->find('all', array(
+                'fields' => array('Category.id', 'Category.name'),
+                'recursive' => -1
+            ));
+            $this->set('category_list', $category_list);
+        }
+
+        //ランキングページ
+        public function rankings($category_id){
+            $category_name;
+            if (!$category_id) {
+                throw new NotFoundException(__('Invalid posts 1'));
+            }
+            $this->Post->recursive = 2;
+            
+            if ($category_id == "total") {
+                $this->Post->Good->virtualFields['Total'] = 'count(Good.post_id)';
+                $where = array(
+                    'fields' => array(
+                        'Post.*',
+                        'count(Good.post_id) AS Good__Total',
+                    ),
+                    'joins' => array(
+                        array(
+                            'table' => 'goods',
+                            'alias' => 'Good',
+                            'type' => 'LEFT',
+                            'conditions' => array(
+                                'Post.id = Good.post_id'
+                            )
+                            ),
+
+                    ),
+                    'conditions' => array(
+                        'NOT' => array(
+                            'Good.post_id' => NULL
+                        )
+                    ),
+                    'group' => 'Good.post_id',
+                    'limit' => 20,
+                    'order' => array(
+                        'Good.Total' => 'desc'
+                    )
+                );
+                // Paginator に条件を設定
+                $this->paginate = $where;
+                // データの取得
+                $rankings = $this->Paginator->paginate();
+                $category_name = "総合";
+            } else {
+                $this->Post->Good->virtualFields['Total'] = 'count(Good.post_id)';
+                $where = array(
+                    'fields' => array(
+                        'Post.*',
+                        'count(Good.post_id) AS Good__Total',
+                    ),
+                    'joins' => array(
+                        array(
+                            'table' => 'goods',
+                            'alias' => 'Good',
+                            'type' => 'LEFT',
+                            'conditions' => array(
+                                'Post.id = Good.post_id'
+                            )
+                            ),
+                    ),
+                    'conditions' => array(
+                        'Category.id' => $category_id,
+                        'NOT' => array(
+                            'Good.post_id' => NULL
+                        )
+                    ),
+                    'group' => 'Good.post_id',
+                    'limit' => 20,
+                    'order' => array(
+                        'Good.Total' => 'desc'
+                    )
+                );
+                // Paginator に条件を設定
+                $this->paginate = $where;
+
+                // データの取得
+                $rankings = $this->Paginator->paginate();
+                $category = $this->Category->find('first', array(
+                    'fields' => 'Category.name',
+                    'conditions' => array('Category.id' => $category_id)
+                ));
+                $category_name = $category['Category']['name'];
+            }
+            
+            if (!$rankings) {
+                throw new NotFoundException(__('Invalid posts 2'));
+            }
+            $this->set('rankings', $rankings);
+            $this->set('category_name', $category_name);
+
+            //カテゴリー一覧取得
+            $category_list = $this->Category->find('all', array(
+                'fields' => array('Category.id', 'Category.name'),
+                'recursive' => -1
+            ));
+            $this->set('category_list', $category_list);
+        }
+
         //mypageの表示
         public function mypage(){
             $userId = $this->Session->read('Auth.User.id');
             $this->paginate = array( 
                 'conditions' => array('Post.user_id' => $userId),
-                'limit' => 5,
+                'limit' => 10,
                 'order' => array('Post.id' => 'asc')
             );
             $setting = $this->paginate('Post');
@@ -340,120 +484,19 @@
 
         }
 
-        //速報ページ
-        public function news($category){
-            if (!$category) {
-                throw new NotFoundException(__('Invalid posts'));
-            }
-            //カテゴリー別速報
-            if ($category == "total") {
-                $this->paginate = array( 
-                        'limit' => 20,
-                        'order' => array('Post.id' => 'desc')
-                    );
-                $setting = $this->paginate('Post');
-            } else {
-                $this->paginate = array( 
-                    'conditions' => array('Category.name' => $category),
-                    'limit' => 20,
-                    'order' => array('Post.id' => 'desc')
-                );
-                $setting = $this->paginate('Post');
-            }
-            
-            if (!$setting) {
-                throw new NotFoundException(__('Invalid posts'));
-            }
-            $this->set('news', $setting);
-    
-        }
+        //ユーザーページ
+        public function user($user_id){
+            $userId = $this->Session->read('Auth.User.id');
+            $this->paginate = array( 
+                'conditions' => array('Post.user_id' => $user_id),
+                'limit' => 15,
+                'order' => array('Post.id' => 'asc')
+            );
+            $setting = $this->paginate('Post');
+            $this->set('posts', $setting);
 
-        //ランキングページ
-        public function rankings($category){
-            if (!$category) {
-                throw new NotFoundException(__('Invalid posts 1'));
-            }
-            $this->Post->recursive = 2;
-
-            if ($category == "total") {
-                $this->Post->Good->virtualFields['Total'] = 'count(Good.post_id)';
-                $where = array(
-                    'fields' => array(
-                        'Post.*',
-                        'count(Good.post_id) AS Good__Total',
-                    ),
-                    'joins' => array(
-                        array(
-                            'table' => 'goods',
-                            'alias' => 'Good',
-                            'type' => 'LEFT',
-                            'conditions' => array(
-                                'Post.id = Good.post_id'
-                            )
-                            ),
-
-                    ),
-                    'conditions' => array(
-                        'NOT' => array(
-                            'Good.post_id' => NULL
-                        )
-                    ),
-                    'group' => 'Good.post_id',
-                    'limit' => 20,
-                    'order' => array(
-                        'Good.Total' => 'desc'
-                    )
-                );
-
-                
-                // Paginator に条件を設定
-                $this->paginate = $where;
-
-                // データの取得
-                $rankings = $this->Paginator->paginate();
-            } else {
-                $this->Post->Good->virtualFields['Total'] = 'count(Good.post_id)';
-                $where = array(
-                    'fields' => array(
-                        'Post.*',
-                        'count(Good.post_id) AS Good__Total',
-                    ),
-                    'joins' => array(
-                        array(
-                            'table' => 'goods',
-                            'alias' => 'Good',
-                            'type' => 'LEFT',
-                            'conditions' => array(
-                                'Post.id = Good.post_id'
-                            )
-                            ),
-
-                    ),
-                    'conditions' => array(
-                        'Category.name' => $category,
-                        'NOT' => array(
-                            'Good.post_id' => NULL
-                        )
-                    ),
-                    'group' => 'Good.post_id',
-                    'limit' => 20,
-                    'order' => array(
-                        'Good.Total' => 'desc'
-                    )
-                );
-
-                
-                // Paginator に条件を設定
-                $this->paginate = $where;
-
-                // データの取得
-                $rankings = $this->Paginator->paginate();
-            }
-            
-            if (!$rankings) {
-                throw new NotFoundException(__('Invalid posts 2'));
-            }
-            $this->set('rankings', $rankings);
+            $user = $this->User->findById($user_id);
+            $this->set('user', $user);
         }
     }
 

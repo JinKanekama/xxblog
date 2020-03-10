@@ -1,21 +1,37 @@
 <!-- 検索画面 -->
-<?= $this->assign('title', $keyword['word'].'の検索結果'); ?>
+<?= $this->assign('title', '検索結果'); ?>
+<?PHP echo $this->Html->css('searchBlogs.css'); ?>
 
-<?php foreach ($posts as $post): ?>
-    <div class="blog-post">
-        <a href="/posts/view/<?=$post['Post']['id']?>">
-            <h2 class="text-dark post-title">
-            <?= h($post['Post']['title']) ?>
-            </h2>
-        </a>
-        <p class="created">
-        <?php echo h($post['Post']['created'])." by ".h($post['User']['username']); ?>
-        </p>
-        <p>
-        <?php echo nl2br(h($post['Post']['body']));?>
-        </p>
+<h1>検索画面</h1>
+<div class="row">
+    <div class="col-md-8">
+        <?php foreach ($posts as $post): ?>
+            <article class="post-item border-top border-bottom row">
+                <div class="col-1">
+                    <a href="/posts/user/<?=$post['User']['id']?>">
+                    <?php 
+                        if($post['User']['Icon'][0]){
+                            echo $this->CustomHtml->image('/files/icon/name/'.$post['User']['Icon'][0]['icon_dir'].'/thumb_'. $post['User']['Icon'][0]['name'], array('class' => 'w-100 rounded'));
+                        }else {
+                            echo $this->CustomHtml->image('hoge', array('class' => 'rounded'));
+                        }
+                    ?>
+                    </a>
+                </div>
+                <div class="post_body col-11">
+                    <a class="item_title" href="/posts/view/<?=$post['Post']['id']?>" >
+                        <?= h($post['Post']['title']) ?>
+                    </a>
+                    <?php  $day = new DateTime($post['Post']['created']);?>
+                    <p class="item_info"><?php echo 'by<a href="/posts/user/'.$post['User']['id'].'">'.h($post['User']['username'])."</a> ".$day->format('m/d H時'); ?></p>
+                </div>
+            </article>
+        <?php endforeach; ?>
+        <?php echo $this->element('pager')?> 
     </div>
-<?php endforeach; ?>
+    <div class="col-md-4">
+        <?php echo $this->element('search')?> 
+    </div>
+</div>
 
 
-<?php echo $this->element('pager')?> 

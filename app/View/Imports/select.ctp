@@ -1,3 +1,7 @@
+<?= $this->assign('title', '都道府県選択') ; ?>
+
+<h1>都道府県選択画面</h1>
+
 <span>都道府県：</span>
 <select id="prefecture">
 <option>選択してください</option>

@@ -1,0 +1,39 @@
+.col-md-2 li{
+    list-style: none;
+    font-size: 12px;
+    margin: 0;
+    padding: 10px 0;    
+}
+
+.col-md-2 a{
+    color: #757575;
+}
+
+h3{
+    font-size: 20px;
+}
+
+article {
+    padding:16px;
+}
+
+article .col-1{
+    padding:0;
+}
+
+article p{
+    margin: 0;   
+}
+
+.col-md-2 {
+    padding: 40px 20px;
+}
+
+.col-md-3{
+    padding-top: 40px;
+}
+
+.col-md-7{
+    padding: 40px 16px;
+}
+

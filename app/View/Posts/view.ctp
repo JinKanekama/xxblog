@@ -1,7 +1,16 @@
-<!-- File: /app/View/Posts/view.ctp -->
 <?PHP echo $this->Html->css('view.css'); ?>
 <?= $this->assign('title', $post['Post']['title']); ?>
 
+<a href="/posts/user/<?= $post['User']['id'] ?>">
+<?php 
+  if($post['User']['Icon'][0]){
+    echo $this->CustomHtml->image('/files/icon/name/'.$post['User']['Icon'][0]['icon_dir'].'/thumb_'. $post['User']['Icon'][0]['name'], array('width'=>'32px'));
+  }else {
+    echo $this->CustomHtml->image('hoge');
+  }
+?>
+<?=$post['User']['username']?>
+</a>
 
 <h1><?php echo h($post['Post']['title']); ?></h1>
 
@@ -54,22 +63,26 @@
       echo '<div class="next"><i class="far fa-caret-square-right fa-5x" style="color:white";></i></div>';
       echo '</div>';
       echo '</div>';
-
       echo '</div>';
       echo '</div>';
       $num2 += 1;
-
    
     }
  ?>
 
-
-<?php
-  
-?>
 <section class="post row" data-flag="<?php echo $goodFlag?>" data-postid="<?php echo $post['Post']['id'];?> "  data-recieveduserid="<?php echo $post['Post']['user_id'];?> ">
 <?php 
 if ($session = $this->Session->read('Auth.User.id')){
+  //good-itemsのdiv
+  echo'<div class="good-items col-6">';
+  if($goodFlag == 0){
+    echo '<div class="btn-good"><i class="far fa-heart"></i></div>';
+  } else {
+    echo '<div class="btn-good active"><i class="fas fa-heart active"></i></div>';
+  }
+  echo '<div class="goods">'.count($post['Good']).'</div>';
+  echo '</div>';
+  //actionsのdiv
   echo '<div class="post-actions col-6">';
   echo $this->Html->link('編集', array('controller' => 'posts', 'action' => 'edit',$post['Post']['id'] ));
   echo $this->Form->postLink(
@@ -78,27 +91,21 @@ if ($session = $this->Session->read('Auth.User.id')){
     array('confirm' => '本当に削除しますか?')
   );
   echo  '</div>';
-  if($goodFlag == 0){
-    echo'<div class="good-items col-6">';
-    echo '<div class="btn-good"><i class="far fa-heart"></i></div>';
-
-  } else {
-    echo '<div class="good-items col-6">';
-    echo '<div class="btn-good active"><i class="fas fa-heart active"></i></div>';
-
-  }
 } else {
-  echo '<div class="col-6"></div>';
   echo '<div class="good-items col-6">';
   echo '<div class="btn-good-default"><i class="far fa-heart"></i></div>';
+  echo '<div class="goods">'.count($post['Good']).'</div>';
+  echo '</div> ';
+  echo '<div class="col-6"></div>';
 }
-echo '<div class="goods">'.count($post['Good']).'</div></div> ';
 
 ?>
 
-
-
 </section>
+
+<h2>関連記事<h2>
+
+
  <?PHP echo $this->Html->script('modal.js'); ?>
 
  <?PHP echo $this->Html->script('good.js'); ?>

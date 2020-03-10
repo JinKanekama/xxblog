@@ -1,6 +1,6 @@
-<?php echo $this->Form->create('Post', array('url' => '/posts/index'));?>  
-  
+<h2>詳細検索</h2>
 
+<?php echo $this->Form->create('Post', array('url' => '/posts/searchBlogs'));?>  
   <div class="search"> 
   <?php
     echo '<div class="form-group">';
@@ -13,15 +13,17 @@
     echo $this->Form->input('Post.category', array(  
       'label' => false, 'class'=>'form-control', 'rows' => '1'));
     echo '</div>';
+    echo '<div class="form-group">';
+    echo '<label for="FormControlTag">タグ</label>';
     echo $this->Form->input('Post.tag', array( 
     'type' => 'select', 
     'multiple'=> 'checkbox',
     'options' =>  $tagCheck,
-    'label' => 'タグ' 
+    'label' => false 
     ));  
-    
+    echo '</div>';
     echo '<button type="submit" class="btn btn-primary">検索</button>';
    ?>  
   </div>
-
 <?php echo $this->Form->end();?> 
+

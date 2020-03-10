@@ -20,9 +20,9 @@
             ?>  
               <?= '<a href="/posts/view/'. $blog['Post']['id'] .'">' ?>
               <?php if($blog['Image'][0]){
-                echo $this->CustomHtml->image('/files/image/name/'. $blog['Image'][0]['image_dir'] .'/'.$blog['Image'][0]['name'], array('class'=>'d-block w-100 img-responsive', 'width'=>'100%', 'height'=>'300px', 'alt'=>'スライド'));
+                echo $this->CustomHtml->image('/files/image/name/'. $blog['Image'][0]['image_dir'] .'/'.$blog['Image'][0]['name'], array('class'=>'d-block w-100 img-responsive rounded', 'width'=>'100%', 'height'=>'300px', 'alt'=>'スライド'));
               } else {
-                echo $this->CustomHtml->image('hoge', array('class'=>'d-block w-100 img-responsive', 'width'=>'100%', 'height'=>'300px', 'alt'=>'スライド'));
+                echo $this->CustomHtml->image('hoge', array('class'=>'d-block w-100 img-responsive rounded', 'width'=>'100%', 'height'=>'300px', 'alt'=>'スライド'));
               }
               ?>
               
@@ -48,7 +48,7 @@
 </div>
 <!-- ニュースメニュー -->
 <div class="news-contents">
-<h2>ブログ速報</h2>
+<h2 >ブログ速報</h2>
   <div class="row">
   <div class="col-md-6 news-left-contents">
   <ul class="nav nav-tabs" role="tablist">
@@ -108,7 +108,7 @@
         </div>
         <div class="col-6 right">
           <div class="news-right-wrapper">
-              <a href="/posts/news/animal">  
+              <a href="/posts/news/1">  
               <div class="news-img">
               <?php if ($animals_news[0]['Image'][0]){
                 echo $this->CustomHtml->image('/files/image/name/'. $animals_news[0]['Image'][0]['image_dir'] .'/'.$animals_news[0]['Image'][0]['name'], array('width'=>"100%", 'height'=>"120px"));
@@ -127,7 +127,7 @@
       <div class="row">
         <div class="col-6  left">
           <div class="news-right-wrapper"> 
-            <a href="/posts/news/programming">
+            <a href="/posts/news/2">
               <div class="news-img">
               <?php if ($programmings_news[0]['Image'][0]){
                 echo $this->CustomHtml->image('/files/image/name/'. $programmings_news[0]['Image'][0]['image_dir'] .'/'.$programmings_news[0]['Image'][0]['name'], array('width'=>"100%", 'height'=>"120px"));
@@ -144,7 +144,7 @@
         </div>
         <div class="col-6  right">
           <div class="news-right-wrapper">
-              <a href="/posts/news/others/?>">  
+              <a href="/posts/news/3">  
               <div class="news-img">
               <?php if ($others_news[0]['Image'][0]){
                 echo $this->CustomHtml->image('/files/image/name/'. $others_news[0]['Image'][0]['image_dir'] .'/'.$others_news[0]['Image'][0]['name'], array('width'=>"100%", 'height'=>"120px"));
@@ -170,15 +170,17 @@
       <?php $i = 1; ?>
       <?php for($n=0;$n<4;$n++ ):?>
       <div class="col-3 ranking-wrapper">
-        <a href="posts/view/<?= $ranking[$n]['Post']['id'] ?>">
+        <a href="/posts/view/<?= $ranking[$n]['Post']['id'] ?>">
         <p><?=$i?>位</p>
+        <div class="img-wrapper">
         <?php
           if (isset($ranking[$n]['Image'][0])){
-          echo $this->CustomHtml->image('/files/image/name/'.$ranking[$n]['Image'][0]['image_dir'].'/thumb_'.$ranking[$n]['Image'][0]['name'], array('class' => 'd-block mx-auto', 'width'=>'50%'));
+            echo $this->CustomHtml->image('/files/image/name/'.$ranking[$n]['Image'][0]['image_dir'].'/thumb_'.$ranking[$n]['Image'][0]['name'], array('class' => 'd-block mx-auto rounded', 'width'=>'50%'));
           } else {
             echo $this->CustomHtml->image('hoge', array('width'=>'50%', 'class' => 'd-block mx-auto'));
           }
         ?> 
+        </div>
         <p class="ranking-title"><?= h($ranking[$n]['Post']['title']) ?></p>
         </a>
       </div>
@@ -190,15 +192,19 @@
       <?php $i = 1; ?>
       <?php for($n=0;$n<4;$n++ ):?>
       <div class="col-3 ranking-wrapper">
+        <a href="/posts/user/<?= $ranking2[$n]['User']['id'] ?>">
         <p><?=$i?>位</p>
+        <div class="img-wrapper">
         <?php
-          if (isset($icons[$n][0])){
-          echo $this->CustomHtml->image('/files/icon/name/'.$icons[$n][0]['icon_dir'].'/thumb_'.$icons[$n][0]['name'], array('class' => 'd-block mx-auto', 'width'=>'50%'));
+          if (isset($ranking2[$n]['Icon'][0])){
+            echo $this->CustomHtml->image('/files/icon/name/'.$ranking2[$n]['Icon'][0]['icon_dir'].'/thumb_'.$ranking2[$n]['Icon'][0]['name'], array('class' => 'd-block mx-auto rounded', 'width'=>'50%'));
           } else {
             echo $this->CustomHtml->image('hoge', array('width'=>'50%', 'class' => 'd-block mx-auto'));
           }
         ?> 
+        </div>
         <p> <?= h($ranking2[$n]['User']['username']) ?></p>  
+        </a>
       </div>
       
       <?php $i++;?>

@@ -1,0 +1,25 @@
+h1{
+    margin-bottom: 40px;
+}
+
+.checkbox {
+    display: inline-block;
+}
+
+.search .form-group{
+    margin: 0;
+}
+
+
+
+.search .checkbox{
+    margin: 0;
+}
+
+.search .checkbox label{
+    font-size: 13px;
+}
+
+.center .col-md-4{
+    padding: 0 40px;
+}

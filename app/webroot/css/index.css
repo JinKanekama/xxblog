@@ -5,14 +5,7 @@ img {
 
 h2{
     margin: 0 0 5px;
-    font-size: 24px;
-    color: #428BCA;
     border-bottom: solid 1px #c0c0c0;
-}
-
-h3{
-    font-size: 18px;
-    color: black;
 }
 
 p{
@@ -26,7 +19,6 @@ p{
 }
 
 .carousel-inner img {
-    border-radius: 15px;
     transform: scale(1);
     transition-duration: 0.3s;
 }
@@ -74,6 +66,9 @@ p{
 
 .news-contents .nav-item {
     font-size: 16px;
+}
+.tab-content .row {
+    height: 48px;
 }
 
 .tab-content a{
@@ -155,7 +150,7 @@ p{
 .ranking-contents .row{
     padding-bottom: 15px;
     border-bottom: solid 0.5px #c0c0c0;
-    margin: 0 8px;
+    margin: 0;
 }
 
 .ranking-wrapper p{
@@ -171,14 +166,16 @@ p{
 
 .ranking-wrapper a{
     text-decoration: none;
+}
 
+.img-wrapper{
+    overflow: hidden;
 }
 
 .ranking-wrapper img{
-    border-radius: 5px;
-
+    transform: scale(1);
+    transition-duration: 0.3s;
 }
-
 
 /* お知らせ */
 .notice-contents{

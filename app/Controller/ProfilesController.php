@@ -42,7 +42,7 @@
                 if ($this->User->saveAll($this->request->data, array('deep' => true))) {
                     $this->Flash->success(__('プロフィールを更新しました。'));
                     
-                    return $this->redirect(array('action' => 'edit'));
+                    return $this->redirect(array('action' => 'mypage'));
                 }
                 $this->Flash->error(__('プロフィールが更新できませんでした。'));
             }

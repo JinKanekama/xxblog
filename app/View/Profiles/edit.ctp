@@ -1,6 +1,5 @@
 <!-- File: /app/View/profiles/edit.ctp -->
 <?= $this->assign('title', "編集画面"); ?>
-<?php Debugger::dump($this->request->data ); ?>
 
 <h1>プロフィール編集画面</h1>
 <?php

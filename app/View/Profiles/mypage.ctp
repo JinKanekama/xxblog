@@ -1,4 +1,5 @@
 <?= $this->assign('title', $user['User']['username'].'さんのページ') ; ?>
+<?PHP echo $this->Html->css('mypage.css'); ?>
 
 <?php if (isset($user['Profile']['blog_title'])):?>
 <h1><?= h($user['Profile']['blog_title']) ?></h1>
@@ -6,18 +7,34 @@
 <h1>XX</h1>
 <?php endif?>
 
-<?= $user['User']['username'].'さん' ?>
+<div class="row">
+<div class="icon-content col-3">
+    <?php if (isset($user['Icon'][0])):?>
+    <?php $icon_sorce = '/files/icon/name/'.$user['Icon'][0]['icon_dir'].'/thumb_'.$user['Icon'][0]['name'] ?>
+    <?=  $this->CustomHtml->image($icon_sorce, array('class'=>'rounded')) ?>
+    <?php else:?>
+    <?=  $this->CustomHtml->image('hoge', array('width'=>'80px')) ?>
+    <?php endif?>
+    <p><?= $user['User']['username'] ?></p>
+</div>
 
-<?php if (isset($user['Icon'][0])):?>
-<?php $icon_sorce = '/files/icon/name/'.$user['Icon'][0]['icon_dir'].'/thumb_'.$user['Icon'][0]['name'] ?>
-<a href="/profiles/edit"><?=  $this->CustomHtml->image($icon_sorce) ?></a>
-<?php else:?>
-<a href="/profiles/edit"><?=  $this->CustomHtml->image('hoge', array('width'=>'80px')) ?></a>
-<?php endif?>
+<div class="action-content col-3">
+<a href="/posts/add"><i class="fas fa-pen-fancy fa-5x"></i>
+<p>記事を書く</p></a>
+</div>
 
-<a href="/posts/add">記事を書く</a>
-<a href="/posts/mypage">投稿一覧</a>
-<a href="/profiles/edit">プロフィール編集</a>
+<div class="action-content col-3">
+<a href="/posts/user/<?= $user['User']['id'] ?>"><i class="far fa-file-alt fa-5x"></i>
+<p>記事一覧</p></a>
+</div>
+
+<div class="action-content col-3">
+<a href="/profiles/edit"><i class="far fa-user fa-5x"></i>
+<p>プロフィール編集</p></a>
+</div>
+</div>
+
+
 <h2>プロフィール</h2>
 
 <?php if (isset($user['Profile']['body'])):?>

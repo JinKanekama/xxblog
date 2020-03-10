@@ -1,7 +1,13 @@
 /* テキスト部 */
 h1 {
-    border-bottom: solid 1px #c0c0c0;
+    margin-top:20px;
+    padding-bottom: 20px;
 }
+
+#content .center{
+    padding: 30px;
+}
+    
 
 /* ディスプレイ部 */
 .display-wrapper {
@@ -70,7 +76,7 @@ h1 {
 
 /* いいね関連 */
 .post {
-    border-top: solid 1px #c0c0c0;
+    /* border-top: solid 1px #c0c0c0; */
     border-bottom: solid 1px #c0c0c0;
     padding: 15px 0;
 }

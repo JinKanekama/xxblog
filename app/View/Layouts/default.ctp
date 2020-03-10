@@ -51,6 +51,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 					<span class="navbar-toggler-icon"></span>
 				</button>
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav">
+					</ul>
 					<ul class="navbar-nav mr-auto">
 						<li class="nav-item">
 							<?php echo $this->Html->link('XXブログ', array('controller' => 'posts', 'action' => 'index', ), array('class' => 'nav-link')); ?>
