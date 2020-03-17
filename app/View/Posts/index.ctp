@@ -18,17 +18,26 @@
                 echo '<div class="carousel-item">';
             } 
             ?>  
-              <?= '<a href="/posts/view/'. $blog['Post']['id'] .'">' ?>
-              <?php if($blog['Image'][0]){
-                echo $this->CustomHtml->image('/files/image/name/'. $blog['Image'][0]['image_dir'] .'/'.$blog['Image'][0]['name'], array('class'=>'d-block w-100 img-responsive rounded', 'width'=>'100%', 'height'=>'300px', 'alt'=>'スライド'));
-              } else {
-                echo $this->CustomHtml->image('hoge', array('class'=>'d-block w-100 img-responsive rounded', 'width'=>'100%', 'height'=>'300px', 'alt'=>'スライド'));
-              }
-              ?>
-              
-              <div class="carousel-caption d-none d-md-block">
-              　<?= '<h5 class="slide-title">'.h($blog['Post']['title']).'</h5>'; ?>
-              　<?= '<p class="slide-user">by '.h($blog['User']['username']).'</p>'; ?>
+            <?= '<a href="/posts/view/'. $blog['Post']['id'] .'">' ?>
+            <?php if($blog['Image'][0]){
+              echo $this->CustomHtml->image('/files/image/name/'. $blog['Image'][0]['image_dir'] .'/'.$blog['Image'][0]['name'], array('class'=>'d-block w-100 img-responsive rounded', 'width'=>'100%', 'height'=>'300px', 'alt'=>'スライド'));
+            } else {
+              echo $this->CustomHtml->image('hoge', array('class'=>'d-block w-100 img-responsive rounded', 'width'=>'100%', 'height'=>'300px', 'alt'=>'スライド'));
+            }
+            ?>
+              <div class="carousel-caption d-none d-md-block w-100">
+              　 <div class="slide-title">
+                <?php 
+                  $text = $blog['Post']['title']; 
+                  $limit = 32;
+                  if(mb_strlen($text) > $limit) {
+                    $title = mb_substr($text,0,$limit);
+                    echo h($title).'･･･' ;
+                  } else {
+                    echo h($text);
+                  }
+                ?>
+                </div>
               </div><!-- /.carousel-caption -->
               </a>
             </div><!-- /.carousel-item -->
@@ -46,9 +55,9 @@
     <span class="sr-only">次へ</span>
   </a>
 </div>
-<!-- ニュースメニュー -->
+<!-- 速報 -->
 <div class="news-contents">
-<h2 >ブログ速報</h2>
+<h2 class="border-bottom">ブログ速報</h2>
   <div class="row">
   <div class="col-md-6 news-left-contents">
   <ul class="nav nav-tabs" role="tablist">
@@ -62,15 +71,30 @@
   <div class="tab-content">
     <div class="tab-pane fade show active" id="item1" role="tabpanel" aria-labelledby="item1-tab">
       <?php foreach($news as $item):?>
-        <a href="/posts/view/<?=$item['Post']['id']?>">
+        <a class="border-bottom" href="/posts/view/<?=$item['Post']['id']?>">
             <div class="row">
-            <?php  $day = new DateTime($item['Post']['created']);?>
-            <div class="col-3 time-box"><span class="time"><?=$day->format('m/d H時');?></span></div>
-            <div class="col-7 title-box"><span class="title"><?=h($item['Post']['title']);?></span></div>
-            <div class="col-2 author-box"><span class="author">by<?=h($item['User']['username']);?></span></div>
+              <?php  $day = new DateTime($item['Post']['created']);?>
+              <div class="col-3 time-box"><span class="time"><?=$day->format('m/d H時');?></span></div>
+              <div class="col-7 title-box"><span class="title">
+                <?php 
+                  $text = $item['Post']['title']; 
+                  $limit = 26;
+                  if(mb_strlen($text) > $limit) {
+                    $title = mb_substr($text,0,$limit);
+                    echo h($title).'･･･' ;
+                  } else {
+                    echo h($text);
+                  }
+                ?>
+              </span></div>
             </div>
-        </a>
+            <div class="row">
+              <div class="col-10"></div>
+              <div class="col-2 author-box"><span class="author text-black-50">by<?=h($item['User']['username']);?></span></div>
+            </div>
+        </a>  
       <?php endforeach?>
+      <a class="more" href="/posts/news/total">>>もっと見る</a>
     </div>
     <div class="tab-pane fade" id="item2" role="tabpanel" aria-labelledby="item2-tab">
       <?php foreach($animals_news as $item):?>
@@ -78,21 +102,33 @@
            <div class="row">
             <?php  $day = new DateTime($item['Post']['created']);?>
             <div class="col-3 time-box"><span class="time"><?=$day->format('m/d H時');?></span></div>
-            <div class="col-7 title-box"><span class="title"><?=h($item['Post']['title']);?></span></div>
-            <div class="col-2 author-box"><span class="author">by<?=h($item['User']['username']);?></span></div>
+            <div class="col-7 title-box"><span class="title">
+              <?php 
+                  $text = $item['Post']['title']; 
+                  $limit = 26;
+                  if(mb_strlen($text) > $limit) {
+                    $title = mb_substr($text,0,$limit);
+                    echo h($title).'･･･' ;
+                  } else {
+                    echo h($text);
+                  }
+              ?>
+            </span></div>
+            <div class="col-2 author-box"><span class="author text-black-50">by<?=h($item['User']['username']);?></span></div>
             </div>
         </a>
       <?php endforeach?>
+      <a class="more" href="/posts/news/1">>>もっと見る</a>
     </div>
   </div>
   </div>
     <div class="col-md-6 news-right-contents">
-      <div class="row">
+      <div class="row h-50">
         <div class="col-6  left">
-          <div class="news-right-wrapper"> 
+          <div class="news-right-wrapper h-100"> 
              <a href="/posts/news/total">
               <div class="news-img">
-                <?php if ($news[0]['Image'][0])  {
+                <?php if (isset($news[0]['Image'][0]))  {
                   echo $this->CustomHtml->image('/files/image/name/'. $news[0]['Image'][0]['image_dir'] .'/'.$news[0]['Image'][0]['name'], array('width'=>'100%', 'height'=>'120px'));
                 } else {
                   echo $this->CustomHtml->image('hoge',array('width'=>'100%', 'height'=>'120px') );
@@ -102,15 +138,26 @@
               
               </div> 
               <p class="news-category">総合速報</p>
-              <p class="title"><?= h($news[0]['Post']['title']) ?></p>
+              <p class="title">
+                <?php 
+                  $text = $news[0]['Post']['title']; 
+                  $limit = 20;
+                  if(mb_strlen($text) > $limit) {
+                    $title = mb_substr($text,0,$limit);
+                    echo h($title).'･･･' ;
+                  } else {
+                    echo h($text);
+                  }
+                ?>
+              </p>
             </a>
           </div>
         </div>
         <div class="col-6 right">
-          <div class="news-right-wrapper">
+          <div class="news-right-wrapper h-100">
               <a href="/posts/news/1">  
               <div class="news-img">
-              <?php if ($animals_news[0]['Image'][0]){
+              <?php if (isset($animals_news[0]['Image'][0])){
                 echo $this->CustomHtml->image('/files/image/name/'. $animals_news[0]['Image'][0]['image_dir'] .'/'.$animals_news[0]['Image'][0]['name'], array('width'=>"100%", 'height'=>"120px"));
                 } else {
                   echo $this->CustomHtml->image('hoge',array('width'=>"100%", 'height'=>"120px") );
@@ -119,17 +166,28 @@
               
               </div> 
               <p class="news-category">動物速報</p>
-              <p class="title"><?= h($animals_news[0]['Post']['title']) ?></p>
+              <p class="title">
+              <?php 
+                $text = $animals_news[0]['Post']['title']; 
+                $limit = 20;
+                if(mb_strlen($text) > $limit) {
+                  $title = mb_substr($text,0,$limit);
+                  echo h($title).'･･･' ;
+                } else {
+                  echo h($text);
+                }
+                ?>  
+              </p>
               </a>
           </div>
         </div>
       </div>
-      <div class="row">
+      <div class="row h-50">
         <div class="col-6  left">
-          <div class="news-right-wrapper"> 
+          <div class="news-right-wrapper h-100"> 
             <a href="/posts/news/2">
               <div class="news-img">
-              <?php if ($programmings_news[0]['Image'][0]){
+              <?php if (isset($programmings_news[0]['Image'][0])){
                 echo $this->CustomHtml->image('/files/image/name/'. $programmings_news[0]['Image'][0]['image_dir'] .'/'.$programmings_news[0]['Image'][0]['name'], array('width'=>"100%", 'height'=>"120px"));
                 } else {
                   echo $this->CustomHtml->image('hoge',array('width'=>"100%", 'height'=>"120px") );
@@ -138,15 +196,26 @@
               
               </div> 
               <p class="news-category">プログラミング速報</p>
-              <p class="title"><?= h($programmings_news[0]['Post']['title']) ?></p>
+              <p class="title">
+              <?php 
+                $text = $programmings_news[0]['Post']['title']; 
+                $limit = 20;
+                if(mb_strlen($text) > $limit) {
+                  $title = mb_substr($text,0,$limit);
+                  echo h($title).'･･･' ;
+                } else {
+                  echo h($text);
+                }
+                ?>   
+              </p>
             </a>
           </div>
         </div>
         <div class="col-6  right">
-          <div class="news-right-wrapper">
+          <div class="news-right-wrapper h-100">
               <a href="/posts/news/3">  
               <div class="news-img">
-              <?php if ($others_news[0]['Image'][0]){
+              <?php if (isset($others_news[0]['Image'][0])){
                 echo $this->CustomHtml->image('/files/image/name/'. $others_news[0]['Image'][0]['image_dir'] .'/'.$others_news[0]['Image'][0]['name'], array('width'=>"100%", 'height'=>"120px"));
               } else {
                 echo $this->CustomHtml->image('hoge', array('width'=>"100%", 'height'=>"120px"));
@@ -154,7 +223,18 @@
               ?>
               </div> 
               <p class="news-category">その他の速報</p>
-              <p class="title"><?= h($others_news[0]['Post']['title']) ?></p>
+              <p class="title">
+              <?php 
+                $text = $others_news[0]['Post']['title']; 
+                $limit = 20;
+                if(mb_strlen($text) > $limit) {
+                  $title = mb_substr($text,0,$limit);
+                  echo h($title).'･･･' ;
+                } else {
+                  echo h($text);
+                }
+                ?>  
+              </p>
               </a>
           </div>
         </div>
@@ -164,14 +244,14 @@
 </div><!-- end news-contets -->
 <!-- ランキングメニュー -->
 <div class="ranking-contents">
-  <h2>ランキング</h2>
+  <h2 class="border-bottom">ランキング</h2>
     <h3>記事</h3>
     <div class="row">
       <?php $i = 1; ?>
       <?php for($n=0;$n<4;$n++ ):?>
-      <div class="col-3 ranking-wrapper">
+      <div class="col-md-3 ranking-wrapper">
         <a href="/posts/view/<?= $ranking[$n]['Post']['id'] ?>">
-        <p><?=$i?>位</p>
+        <p class="rank"><?=$i?>位</p>
         <div class="img-wrapper">
         <?php
           if (isset($ranking[$n]['Image'][0])){
@@ -181,19 +261,34 @@
           }
         ?> 
         </div>
-        <p class="ranking-title"><?= h($ranking[$n]['Post']['title']) ?></p>
+        <p class="ranking-title">
+        <?php 
+          $text = $ranking[$n]['Post']['title']; 
+          $limit = 20;
+          if(mb_strlen($text) > $limit) {
+            $title = mb_substr($text,0,$limit);
+            echo h($title).'･･･' ;
+          } else {
+            echo h($text);
+          }
+        ?>    
+        </p>
         </a>
       </div>
       <?php $i++;?>
       <?php endfor; ?>
     </div>
+    <div class="row border-bottom more-wrapper">
+      <a class="col text-right ranking-more" href="posts/rankings/total">>>もっと見る</a>
+    </div>
+    
     <h3>ブロガー</h3>
     <div class="row">
       <?php $i = 1; ?>
       <?php for($n=0;$n<4;$n++ ):?>
-      <div class="col-3 ranking-wrapper">
-        <a href="/posts/user/<?= $ranking2[$n]['User']['id'] ?>">
-        <p><?=$i?>位</p>
+      <div class="col-md-3 ranking-wrapper">
+        <a href="/posts/user/<?= $ranking2[$n]['User']['id'] ?>/new">
+        <p class="rank"><?=$i?>位</p>
         <div class="img-wrapper">
         <?php
           if (isset($ranking2[$n]['Icon'][0])){
@@ -206,19 +301,22 @@
         <p> <?= h($ranking2[$n]['User']['username']) ?></p>  
         </a>
       </div>
-      
       <?php $i++;?>
       <?php endfor; ?>
     </div>
+    <div class="row border-bottom more-wrapper">
+      <a class="col text-right ranking-more">>>もっと見る</a>
+    </div>
+    
 </div>
 <!-- お知らせメニュー -->
 <div class="notice-contents">
-  <h2>お知らせ</h2>
-    <div class="row notice-wrapper">
+  <h2 class="border-bottom">お知らせ</h2>
+    <div class="row border-bottom">
         <span class="day col-3">2/25</span>
         <span class="comment col-9">当ブログについてのXXなお知らせ</span>
     </div>
-    <div class="row notice-wrapper">
+    <div class="row border-bottom">
         <span class="day col-3">2/24</span>
         <span class="comment col-9">20XX年に一般公開しました。</span>
     </div>

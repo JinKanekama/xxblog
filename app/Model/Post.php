@@ -1,7 +1,7 @@
 <?php
     class Post extends AppModel {
         //searchプラグイン
-        public $actsAs = array('Search.Searchable');
+        public $actsAs = array('Search.Searchable','SoftDelete');
         public $filterArgs = array(
             array('name' => 'word', 'type' => 'like',  'field' => array('Post.title', 'Post.body'), 'connectorAnd' => ' ', 'connectorOr' => ','),
             array('name' => 'title', 'type' => 'like', 'field' => 'Post.title', 'connectorAnd' => ' ', 'connectorOr' => ','),

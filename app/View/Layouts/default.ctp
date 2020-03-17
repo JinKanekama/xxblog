@@ -57,25 +57,21 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 						<li class="nav-item">
 							<?php echo $this->Html->link('XXブログ', array('controller' => 'posts', 'action' => 'index', ), array('class' => 'nav-link')); ?>
 						</li>
-						<li class="nav-item">
-							<a href="/posts/news/total" class="nav-link">ブログ速報</a>
-						</li>
-						<li class="nav-item">
-							<a href="/posts/rankings/total" class="nav-link">ランキング</a>
-						</li>
-						<li class="nav-item">
-							<?php echo $this->Html->link('カテゴリ', array('controller' => '', 'action' => '', ), array('class' => 'nav-link')); ?>
-						</li>
+						<?php  if(isset($searchFlag)):?>
+							<li class="nav-item">
+							<?php echo $this->Form->create('Post', array('url' => '/posts/searchBlogs', 'class'=>'form-inline')); ?>						
+								<?php echo $this->Form->input('Post.word', array('div' => false, 'label' => false, 'id' => "sbox1", 'class'=>'form-control', 'rows' => '1'));?><!-- Post.titleのところを修正 -->
+								<button type="submit" id="sbtn1" class="btn btn-outline-light">検索</button>
+							<?php echo $this->Form->end(); ?>
+							</li>
+						<?php endif;?>
 						<?php
-							$session = $this->Session->read('Auth.User.id');
-							if (isset($session)){
-								echo '<li class="nav-item">';
-								echo $this->Html->link('MyPage', array('controller' => 'profiles', 'action' => 'mypage', ), array('class' => 'nav-link'));
-								echo '</li>';
-								echo '<li class="nav-item">';
-								echo $this->Html->link('管理画面', array('controller' => 'imports', 'action' => 'index', ), array('class' => 'nav-link'));
-								echo '</li>';
-							} 
+							// $session = $this->Session->read('Auth.User.id');
+							// if (isset($session)){
+							// 	echo '<li class="nav-item">';
+							// 	echo $this->Html->link('MyPage', array('controller' => 'profiles', 'action' => 'mypage', ), array('class' => 'nav-link'));
+							// 	echo '</li>';
+							// } 
 						?>
 					</ul>
 					<ul class="navbar-nav nav-right">
@@ -93,15 +89,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 								echo '</li>';
 							}
 						?>
-						<!-- 要修正！ -->
-						<?php  if(isset($searchFlag)):?>
-							<?php echo $this->Form->create('Post', array('url' => '/posts/searchBlogs', 'class'=>'form-inline')); ?>						
-					
-								<?php echo $this->Form->input('Post.word', array('div' => false, 'label' => false, 'id' => "sbox1", 'class'=>'form-control', 'rows' => '1'));?><!-- Post.titleのところを修正 -->
-								<button type="submit" id="sbtn1" class="btn btn-outline-light">検索</button>
-			
-							<?php echo $this->Form->end(); ?>
-						<?php endif;?>
+						
 					</ul>
 				</div>
 			</nav>
@@ -110,13 +98,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 			<?php echo $this->Flash->render('auth'); ?>
 			<?php echo $this->Flash->render(); ?>
 			<div class="container">
-				<div class="row">
-					<div class="col-md-1 container-items"></div>
-					<div class="col-md-10 center">
-						<?php echo $this->fetch('content'); ?>
-					</div>
-					<div class="col-md-1 container-items"></div>
-				</div>
+				<?php echo $this->fetch('content'); ?>
 			</div>
 		</div>
 		<div id="footer">

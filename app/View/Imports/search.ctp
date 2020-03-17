@@ -1,9 +1,10 @@
 <?= $this->assign('title', '都道府県検索') ; ?>
 
 <h1>都道府県検索画面</h1>
-
-<input type="text" id="code" name="" value="">
-<button type="button" id="searchBtn">検索</button>
+<div class="form-group　row">
+<input class="col-xs-9 form-control" type="text" id="code" name="" value="">
+<button class="col-xs-3" type="button" id="searchBtn">検索</button>
+</div>
 
 <table class="area">
 <tr>

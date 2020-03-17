@@ -4,14 +4,13 @@ img {
 }
 
 h2{
-    margin: 0 0 5px;
-    border-bottom: solid 1px #c0c0c0;
+    margin: 0 0 16px;
+    padding: 0 0 16px
 }
 
 p{
     font-size: 16px;
 }
-
 
 /* スライドショー */
 .carousel-inner{
@@ -21,11 +20,25 @@ p{
 .carousel-inner img {
     transform: scale(1);
     transition-duration: 0.3s;
+    position: relative;
+}
+
+.carousel-caption{
+    background: rgba(0, 0, 0, 0.4);
+    position: absolute;
+    height: 30%;
+    padding:5px 0 5px;
+    bottom: 0;
+    left: 0;
+}
+
+.carousel-caption .slide-title{
+    font-size: 20px;
 }
 
 /* ブログ速報 */
 .news-contents {
-    margin: 30px 0 0;
+    margin: 64px 0 0;
 }
 
 .news-contents h2{
@@ -38,6 +51,7 @@ p{
 
 .news-left-contents ul{
     border-bottom: solid 3px #428BCA;
+    margin: 0;
 }
 
 .news-left-contents .nav-item .active{
@@ -46,38 +60,46 @@ p{
     color: white;
 }
 
-.news-left-contents a:hover{
-    background-color: #EBF5FB ;
-}
-
-.news-left-contents .title-box{
-    padding: 0;
-}
-
-.news-left-contents .author-box{
-    position: relative;
-}
-
-.author-box .author{
-    position: absolute;
-    right: 15px;
-    bottom: 0;
-}
-
 .news-contents .nav-item {
     font-size: 16px;
 }
+
+.tab-content a:hover{
+    background-color: #EBF5FB ;
+}
+
+.tab-content .more{
+    
+    text-align: right;
+}
+
+.tab-content .more:hover{
+    background-color: initial;
+    text-decoration: underline;
+}
+
+.tab-content .time-box{
+    padding: 0;
+}
+
+.tab-content .title-box{
+    padding: 0;
+}
+
+.tab-content .author-box{
+    padding: 5px 0;
+}
+
 .tab-content .row {
-    height: 48px;
+    margin:0;
 }
 
 .tab-content a{
     font-size: 16px;
     display: block;
-    padding:22px 0 0;
+    padding: 16px 0 0;
     color: #333333;
     text-decoration: none;
-    border-bottom: solid 0.5px #c0c0c0;
 }
 
 .tab-content h3{
@@ -102,21 +124,22 @@ p{
     padding: 7px;
 }
 
-.news-right-wrapper:hover{
-    background-color: #EBF5FB ;
-}
-
-
 .news-right-wrapper{
     padding:0;
-    margin: 5px 0;
     border-radius: 10px;
     overflow: hidden;
 }
 
+.news-right-wrapper:hover{
+    background-color: #EBF5FB ;
+}
+
+.news-right-wrapper p{
+    margin: 10px 0;
+    padding: 0 15px;
+}
+
 .news-right-wrapper .news-category{
-    font-size: 16px;
-    margin: 0 0 ;
     color: #000000;
 }
 
@@ -134,29 +157,27 @@ p{
     padding-right: 15px;
 }
 
-
-
-
 /* ランキング */
-
 .ranking-contents {
-    margin: 30px 0 0;
+    margin: 64px 0 0;
 }
 
 .ranking-contents h3{
-    margin: 15px 0 15px;
+    margin: 15px 0 5px;
 }
 
 .ranking-contents .row{
-    padding-bottom: 15px;
-    border-bottom: solid 0.5px #c0c0c0;
     margin: 0;
+}
+
+.ranking-wrapper .rank{
+    margin: 20px 0 10px;
 }
 
 .ranking-wrapper p{
     color: #000000;
     text-align: center;
-    margin: 0;
+    margin: 10px 0;
 }
 
 .ranking-contents .ranking-title{
@@ -177,13 +198,18 @@ p{
     transition-duration: 0.3s;
 }
 
+.more-wrapper{
+    padding: 10px 0 10px;
+}
+
 /* お知らせ */
 .notice-contents{
-    margin: 30px 0 0;
+    margin: 64px 0 0;
 }
 
-.notice-wrapper{
+.notice-contents .row{
     margin: 0 10px;
     border-bottom: solid 0.5px #c0c0c0;
-
+    padding: 10px 0;
 }
+

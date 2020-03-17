@@ -1,6 +1,6 @@
 .col-md-2 li{
     list-style: none;
-    font-size: 12px;
+    font-size: 16px;
     margin: 0;
     padding: 10px 0;    
 }
@@ -34,6 +34,39 @@ article p{
 }
 
 .col-md-7{
-    padding: 40px 16px;
+    padding: 40px 0;
+}
+.col-md-7 .row{
+    margin: 0;
 }
 
+
+/* 右側のコンテンツ */
+.others-contents h3{
+    font-size: 14px;
+}
+
+.others-contents p{
+    font-size: 12px;
+}
+
+.others-contents .col-2{
+    padding: 0;
+}
+
+.others-contents .col-3{
+    padding: 0;
+}
+
+.others-contents .col-5{
+    padding: 0 5px;
+}
+
+.others-contents .row {
+    margin: 0 0 8px 0;
+    padding: 0 8px 8px 8px;
+}
+
+.fa-heart{
+    color: #f44336;
+}

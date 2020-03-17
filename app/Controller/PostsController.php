@@ -47,10 +47,42 @@
     
             return parent::isAuthorized($user);
         }
+
+        //ユーザーランキング
+        public function userRanking(){
+            $this->User->Good->virtualFields['Total'] = 'count(Good.recieved_user_id)';
+            $where = array(
+                'fields' => array(
+                    'User.*',
+                    'count(Good.recieved_user_id) AS Good__Total',
+                ),
+                'joins' => array(
+                    array(
+                        'table' => 'goods',
+                        'alias' => 'Good',
+                        'type' => 'LEFT',
+                        'conditions' => array(
+                            'User.id = Good.recieved_user_id'
+                        )
+                        )
+                ),
+                'conditions' => array(
+                    'NOT' => array(
+                        'Good.recieved_user_id' => NULL
+                    )
+                ),
+                'group' => 'Good.recieved_user_id',
+                'limit' => 10,
+                'order' => array(
+                    'Good.Total' => 'desc'
+                )
+            );
+            $user_ranking = $this->User->find('all', $where);
+            return $user_ranking;
+        }
         
         //投稿一覧表示
         public function index() {
-
             $blogs = $this->Post->find(
                 'all',
                 array(
@@ -108,7 +140,6 @@
 
             //hasManyアソシエーションのカウンターをもつバーチャルフィールド 記事ランキング
             $this->Post->recursive = 1;
-
             $this->Post->Good->virtualFields['Total'] = 'count(Good.post_id)';
             $where = array(
                 'fields' => array(
@@ -145,7 +176,7 @@
             $ranking = $this->Paginator->paginate();
             $this->set('ranking', $ranking);
 
-            //hasManyアソシエーションのカウンターをもつバーチャルフィールド ブログランキング
+            //hasManyアソシエーションのカウンターをもつバーチャルフィールド ブロガーランキング
             $this->User->Good->virtualFields['Total'] = 'count(Good.recieved_user_id)';
             $where2 = array(
                 'fields' => array(
@@ -188,7 +219,7 @@
             $this->paginate = array(  
                 'conditions' => $conditions,
                 'limit' => 10 ,
-                'order' => array('Post.id' => 'asc'),
+                'order' => array('Post.id' => 'desc'),
                 'recursive' => 2
             );
             $this->set('posts', $this->paginate('Post'));  
@@ -204,10 +235,6 @@
             $this->set( 'tagCheck', $tagcheck);
             }
 
-        public function searchDetails(){
-
-        }
-
         //詳細表示
         public function view($id = null) {
             //ブログ取得
@@ -220,7 +247,6 @@
                 throw new NotFoundException(__('Invalid post'));
             }
             $this->set('post', $post);
-            
            
             //既にいいねした投稿か調べる
             $user_id = $this->Session->read('Auth.User.id');
@@ -229,7 +255,6 @@
             ));
             $this->set('goodFlag', $goodFlag);
         }
-
 
         //投稿
         public function add() {
@@ -258,7 +283,7 @@
                 if ($this->Post->saveAll($this->request->data, array('deep' => true))) {
                     
                     $this->Flash->success(__('投稿しました。'));
-                    return $this->redirect(array('action' => 'add'));
+                    return $this->redirect(array('action' => 'index'));
                     
                 } 
                 $this->Flash->error(__('投稿できませんでした。')); 
@@ -298,26 +323,28 @@
             }
             //postの削除前に変数に格納
             $post = $this->Post->findById($id);
-            $images = $post['Image'];
-            if ($this->Post->delete($id, true)) {
-                //投稿画像があるか検出
-                if (!empty($images)) {
-                    foreach ($images as $i){
-                        $dir_path = "/var/www/html/blogapp/app/webroot/files/image/name/".$i['image_dir'];
-                        $files = array_diff(scandir($dir_path), array('.','..'));
-                        foreach ($files as $file) {
-                            $file_path =  $dir_path ."/".$file;
-                            if (is_file($file_path)) { 
-                                // ファイルを削除
-                                unlink($file_path);
-                            }
-                        }
-                        if (is_dir($dir_path)) {
-                            //ディレクトリを削除
-                            rmdir($dir_path);
-                        } 
-                    }
-                }
+            //$images = $post['Image'];
+            
+            if ($this->Post->delete($id)) {
+                //物理削除の場合
+                //投稿画像があるか検出 
+                // if (!empty($images)) {
+                //     foreach ($images as $i){
+                //         $dir_path = "/var/www/html/blogapp/app/webroot/files/image/name/".$i['image_dir'];
+                //         $files = array_diff(scandir($dir_path), array('.','..'));
+                //         foreach ($files as $file) {
+                //             $file_path =  $dir_path ."/".$file;
+                //             if (is_file($file_path)) { 
+                //                 // ファイルを削除
+                //                 unlink($file_path);
+                //             }
+                //         }
+                //         if (is_dir($dir_path)) {
+                //             //ディレクトリを削除
+                //             rmdir($dir_path);
+                //         } 
+                //     }
+                // }
                 $this->Flash->success(
                     __('削除されました。', h($id))
                 );
@@ -339,20 +366,20 @@
             //カテゴリー別速報
             if ($category_id == "total") {
                 $this->paginate = array( 
-                        'limit' => 20,
+                        'limit' => 10,
                         'order' => array('Post.id' => 'desc'),
                         'recursive' => 2
                     );
-                $setting = $this->paginate('Post');
+                $news = $this->paginate('Post');
                 $category_name = "総合";
             } else {
                 $this->paginate = array( 
                     'conditions' => array('Category.id' => $category_id),
-                    'limit' => 20,
+                    'limit' => 10,
                     'order' => array('Post.id' => 'desc'),
                     'recursive' => 2
                 );
-                $setting = $this->paginate('Post');
+                $news = $this->paginate('Post');
                 $category = $this->Category->find('first', array(
                     'fields' => 'Category.name',
                     'conditions' => array('Category.id' => $category_id)
@@ -360,10 +387,10 @@
                 $category_name = $category['Category']['name'];
             }
             
-            if (!$setting) {
+            if (!$news) {
                 throw new NotFoundException(__('Invalid posts'));
             }
-            $this->set('news', $setting);
+            $this->set('news', $news);
             $this->set('category_name', $category_name);
             
             //カテゴリー一覧取得
@@ -372,6 +399,11 @@
                 'recursive' => -1
             ));
             $this->set('category_list', $category_list);
+
+            //ユーザーランキング
+            $user_ranking = $this->userRanking();
+            $this->set('user_ranking', $user_ranking);
+
         }
 
         //ランキングページ
@@ -383,11 +415,10 @@
             $this->Post->recursive = 2;
             
             if ($category_id == "total") {
-                $this->Post->Good->virtualFields['Total'] = 'count(Good.post_id)';
+                //$this->Post->Good->virtualFields['Total'] = 'count(Good.post_id)';
                 $where = array(
                     'fields' => array(
-                        'Post.*',
-                        'count(Good.post_id) AS Good__Total',
+                        'Post.id',
                     ),
                     'joins' => array(
                         array(
@@ -400,21 +431,23 @@
                             ),
 
                     ),
-                    'conditions' => array(
-                        'NOT' => array(
-                            'Good.post_id' => NULL
-                        )
+                    'condition' => array(
+                        'Good.post_id' => NULL
                     ),
-                    'group' => 'Good.post_id',
-                    'limit' => 20,
+                    'limit' => 10,
                     'order' => array(
-                        'Good.Total' => 'desc'
+                        'Post.created' => 'desc'
                     )
                 );
                 // Paginator に条件を設定
                 $this->paginate = $where;
                 // データの取得
-                $rankings = $this->Paginator->paginate();
+                $hoge = $this->Paginator->paginate();
+                $this->set($hoge);
+
+                $result1 = $this->Post->query('select posts.id from posts left join goods on posts.id = goods.post_id group by goods.post_id having goods.post_id is not null;');
+                $result2 = $this->Post->query('select posts.id from posts left join goods on posts.id = goods.post_id where goods.post_id is NULL order by posts.created desc;');
+                $rankings = array_merge($result1, $result2);
                 $category_name = "総合";
             } else {
                 $this->Post->Good->virtualFields['Total'] = 'count(Good.post_id)';
@@ -435,12 +468,12 @@
                     ),
                     'conditions' => array(
                         'Category.id' => $category_id,
-                        'NOT' => array(
-                            'Good.post_id' => NULL
-                        )
+                        // 'NOT' => array(
+                        //     'Good.post_id' => NULL
+                        // )
                     ),
                     'group' => 'Good.post_id',
-                    'limit' => 20,
+                    'limit' => 10,
                     'order' => array(
                         'Good.Total' => 'desc'
                     )
@@ -469,6 +502,11 @@
                 'recursive' => -1
             ));
             $this->set('category_list', $category_list);
+
+            //ユーザーランキング
+            $user_ranking = $this->userRanking();
+            // データの取得
+            $this->set('user_ranking', $user_ranking);
         }
 
         //mypageの表示
@@ -477,26 +515,70 @@
             $this->paginate = array( 
                 'conditions' => array('Post.user_id' => $userId),
                 'limit' => 10,
-                'order' => array('Post.id' => 'asc')
+                'order' => array('Post.id' => 'desc')
             );
             $setting = $this->paginate('Post');
             $this->set('posts', $setting);
-
         }
 
         //ユーザーページ
-        public function user($user_id){
-            $userId = $this->Session->read('Auth.User.id');
-            $this->paginate = array( 
-                'conditions' => array('Post.user_id' => $user_id),
-                'limit' => 15,
-                'order' => array('Post.id' => 'asc')
-            );
-            $setting = $this->paginate('Post');
-            $this->set('posts', $setting);
-
+        public function user($user_id, $arg){
+            //ユーザー特定
             $user = $this->User->findById($user_id);
             $this->set('user', $user);
+
+            if ($arg == "new"){
+                //新着順のユーザーの記事
+                $userId = $this->Session->read('Auth.User.id');
+                //Paginatorに条件を設定
+                $this->paginate = array( 
+                    'conditions' => array('Post.user_id' => $user_id),
+                    'limit' => 5,
+                    'order' => array('Post.id' => 'desc')
+                );
+                $setting = $this->paginate();
+                $this->set('posts', $setting);
+
+            } elseif($arg == "good") {
+                //いいね順のユーザーの記事
+                $this->Post->Good->virtualFields['Total'] = 'count(Good.post_id)';
+                //条件をセット
+                $where = array(
+                    'fields' => array(
+                        'Post.*',
+                        'count(Good.post_id) AS Good__Total',
+                    ),
+                    'joins' => array(
+                        array(
+                            'table' => 'goods',
+                            'alias' => 'Good',
+                            'type' => 'LEFT',
+                            'conditions' => array(
+                                'Post.id = Good.post_id'
+                            )
+                        )
+                    ),
+                    'conditions' => array(
+                        'Post.user_id' => $user_id,
+                        'NOT' => array(
+                            'Good.post_id' => NULL
+                        )
+                    ),
+                    'recursive' => 2,
+                    'group' => 'Good.post_id',
+                    'limit' => 5,
+                    'order' => array(
+                        'Good.Total' => 'desc'
+                    )
+                );
+                
+                // Paginator に条件を設定
+                $this->paginate = $where;
+                // データの取得
+                $rankings = $this->Paginator->paginate();
+                $this->set('posts', $rankings);
+            }
+            $this->set('arg', $arg);
         }
     }
 

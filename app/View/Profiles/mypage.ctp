@@ -24,7 +24,7 @@
 </div>
 
 <div class="action-content col-3">
-<a href="/posts/user/<?= $user['User']['id'] ?>"><i class="far fa-file-alt fa-5x"></i>
+<a href="/posts/user/<?= $user['User']['id'] ?>/new"><i class="far fa-file-alt fa-5x"></i>
 <p>記事一覧</p></a>
 </div>
 

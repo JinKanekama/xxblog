@@ -2,37 +2,75 @@
 <?PHP echo $this->Html->css('user.css'); ?>
 
 <div class="row">
-  <div class="col-3 user-profile">
+  <div class="col-md-3 user-profile">
     <?php 
-      if($user['Icon'][0]){
+      if(isset($user['Icon'][0])){
         echo $this->CustomHtml->image('/files/icon/name/'.$user['Icon'][0]['icon_dir'].'/'. $user['Icon'][0]['name'], array('class'=>'w-100 rounded'));
       }else {
-        echo $this->CustomHtml->image('hoge');
+        echo $this->CustomHtml->image('hoge', array('class' => 'w-100 rounded'));
       }
     ?>
-    <p><?=$user['User']['username']?></p>
+    <p><?= h($user['User']['username'])?></p>
+    <p><?= nl2br(h($user['Profile']['body'])); ?></p>
   </div>
   <div class="col-md-9">
-    <?php foreach ($posts as $post): ?>
-      <article class="post-item border-top border-bottom row">
-        <div class="col-1">
-        <?php 
-          if($user['Icon'][0]){
-            echo $this->CustomHtml->image('/files/icon/name/'.$user['Icon'][0]['icon_dir'].'/thumb_'. $user['Icon'][0]['name'], array('class' => 'w-100 rounded'));
-          }else {
-            echo $this->CustomHtml->image('hoge', array('class' => 'rounded'));
-          }
-        ?>
-        </div>
-        <div class="post_body col-11">
-          <a class="item_title" href="/posts/view/<?=$post['Post']['id']?>" >
-            <?= h($post['Post']['title']) ?>
-          </a>
-          <?php  $day = new DateTime($post['Post']['created']);?>
-          <p class="item_info"><?php echo 'by'.h($post['User']['username'])." ".$day->format('m/d H時'); ?></p>
-          </div>
-      </article>
-      <?php endforeach; ?>
-    <?php echo $this->element('pager')?> 
+    <ul class="nav nav-tabs" role="tablist">
+      <?php if($arg == "new"):?>
+        <li class="nav-item">
+          <a class="nav-link  active" id="item1-tab" href="/posts/user/<?= $user['User']['id'] ?>/new" role="tab" aria-controls="item1" >新着順</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="item2-tab" href="/posts/user/<?= $user['User']['id'] ?>/good" role="tab" aria-controls="item2" >いいね順</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="item3-tab" href="#" role="tab" aria-controls="item3" >コメント</a>
+        </li>
+      <?php elseif($arg == "good"):?>
+        <li class="nav-item">
+          <a class="nav-link" id="item1-tab" href="/posts/user/<?= $user['User']['id'] ?>/new" role="tab" aria-controls="item1" >新着順</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link  active" id="item2-tab" href="/posts/user/<?= $user['User']['id'] ?>/good" role="tab" aria-controls="item2" >いいね順</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="item3-tab" href="#" role="tab" aria-controls="item3" >コメント</a>
+        </li>
+      <?php elseif($arg == "comment"):?>
+        <li class="nav-item">
+          <a class="nav-link" id="item1-tab" href="/posts/user/<?= $user['User']['id'] ?>/new" role="tab" aria-controls="item1" >新着順</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="item2-tab" href="/posts/user/<?= $user['User']['id'] ?>/good" role="tab" aria-controls="item2" >いいね順</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" id="item3-tab" href="#" role="tab" aria-controls="item3" >コメント</a>
+        </li>
+      <?php endif?>
+    </ul>
+    <div class="tab-content">
+        <?php foreach ($posts as $post): ?>
+          <article class="post-item border-bottom row">
+            <div class="col-1">
+            <?php 
+              if(isset($post['Image'][0])){
+                echo $this->CustomHtml->image('/files/image/name/'.$post['Image'][0]['image_dir'].'/thumb_'. $post['Image'][0]['name'], array('class' => 'w-100 rounded'));
+              }else {
+                echo $this->CustomHtml->image('hoge', array('class' => 'w-100 rounded'));
+              }
+            ?>
+            </div>
+            <div class="post_body col-11">
+              <a class="item_title" href="/posts/view/<?=$post['Post']['id']?>" >
+                <?= h($post['Post']['title']) ?>
+              </a>
+              <?php  $day = new DateTime($post['Post']['created']);?>
+              <p class="item_info"><?php echo 'by'.h($post['User']['username'])." ".'<span class="text-black-50">'.$day->format('m/d H時').'</span>'; ?></p>
+              </div>
+          </article>
+        <?php endforeach; ?>
+      <?php echo $this->element('pager')?> 
+    </div>
   </div>
 </div>
+
+<?PHP echo $this->Html->script('nav.js'); ?>

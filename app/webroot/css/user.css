@@ -1,7 +1,15 @@
+.nav-tabs{
+    margin: 0;
+}
+
 article {
-    padding:8px;
+    padding:16px;
 }
 
 article .col-1{
     padding:0;
+}
+
+article .col-11 .fa-heart{
+    color: #f44336;
 }

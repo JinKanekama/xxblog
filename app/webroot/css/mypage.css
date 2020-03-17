@@ -2,12 +2,11 @@ h1{
     margin-bottom: 40px;
 }
 
-
-
 .action-content{
     display: inline-block;
 }
 
-.action-content i{
 
+.center p{
+    color: #000000;
 }

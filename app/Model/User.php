@@ -3,6 +3,8 @@
     App::uses('BlowfishPasswordHasher', 'Controller/Component/Auth');
     // app/Model/User.php
     class User extends AppModel {
+        public $actsAs = array('SoftDelete');
+
         public $useTable = 'users';
 
         public $hasMany = array(

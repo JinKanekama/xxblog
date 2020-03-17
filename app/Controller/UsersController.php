@@ -12,6 +12,10 @@
 
         public function index() {
             $this->User->recursive = 0;
+            $this->paginate = array(
+                'order' => array(
+                    'User.id' => 'asc'
+            ));
             $this->set('users', $this->paginate());
         }
 
@@ -27,7 +31,7 @@
                 $this->User->create();
                 if ($this->User->save($this->request->data)) {
                     $this->Flash->success(__('ユーザーを登録しました。'));
-                    return $this->redirect(array('action' => 'index'));
+                    return $this->redirect(array('controller'=>'users', 'action' => 'login'));
                 }
                 $this->Flash->error(
                     __('ユーザーが登録できませんでした。')
@@ -57,14 +61,14 @@
         public function delete($id = null) {
             // Prior to 2.5 use
             // $this->request->onlyAllow('post');
-
+            $user = $this->User->findById($id);
             $this->request->allowMethod('post');
-
+            
             $this->User->id = $id;
             if (!$this->User->exists()) {
                 throw new NotFoundException(__('Invalid user'));
             }
-            if ($this->User->delete()) {
+            if ($this->User->delete($id)) {
                 $this->Flash->success(__('ユーザーを削除しました。'));
                 return $this->redirect(array('action' => 'index'));
             }

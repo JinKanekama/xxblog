@@ -1,12 +1,12 @@
 <?PHP echo $this->Html->css('view.css'); ?>
 <?= $this->assign('title', $post['Post']['title']); ?>
 
-<a href="/posts/user/<?= $post['User']['id'] ?>">
+<a href="/posts/user/<?= $post['User']['id'] ?>/new">
 <?php 
-  if($post['User']['Icon'][0]){
+  if(isset($post['User']['Icon'][0])){
     echo $this->CustomHtml->image('/files/icon/name/'.$post['User']['Icon'][0]['icon_dir'].'/thumb_'. $post['User']['Icon'][0]['name'], array('width'=>'32px'));
   }else {
-    echo $this->CustomHtml->image('hoge');
+    echo $this->CustomHtml->image('hoge', array('width'=>'32px'));
   }
 ?>
 <?=$post['User']['username']?>
