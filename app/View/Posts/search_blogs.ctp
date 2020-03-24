@@ -7,7 +7,7 @@
     <div class="col-md-8">
         <?php foreach ($posts as $post): ?>
             <article class="post-item border-top border-bottom row">
-                <div class="col-1">
+                <div class="col-2">
                     <a href="/posts/user/<?=$post['User']['id']?>">
                     <?php 
                         if($post['User']['Icon'][0]){
@@ -18,7 +18,7 @@
                     ?>
                     </a>
                 </div>
-                <div class="post_body col-11">
+                <div class="post_body col-10">
                     <a class="item_title" href="/posts/view/<?=$post['Post']['id']?>" >
                         <?= h($post['Post']['title']) ?>
                     </a>

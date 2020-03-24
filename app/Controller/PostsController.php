@@ -237,6 +237,9 @@
 
         //詳細表示
         public function view($id = null) {
+            //time計測 
+            $time_start = microtime(true);
+
             //ブログ取得
             if (!$id) {
                 throw new NotFoundException(__('Invalid post'));
@@ -247,6 +250,16 @@
                 throw new NotFoundException(__('Invalid post'));
             }
             $this->set('post', $post);
+
+            //関連記事
+            $articles = $this->Post->find('all',
+                        array(    
+                        'conditions' => array('Category.id' => $post['Category']['id']),
+                        'limit' => 6,
+                        'order' => array('Post.created' => 'desc')
+                        ));
+            $this->set('articles', $articles);
+            
            
             //既にいいねした投稿か調べる
             $user_id = $this->Session->read('Auth.User.id');
@@ -254,6 +267,9 @@
                 'conditions' => array('Good.post_id' => $id, 'Good.send_user_id' => $user_id)
             ));
             $this->set('goodFlag', $goodFlag);
+
+            $time = microtime(true) - $time_start;
+            $this->Flash->success(__($time));
         }
 
         //投稿

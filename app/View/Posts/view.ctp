@@ -103,13 +103,19 @@ if ($session = $this->Session->read('Auth.User.id')){
 
 </section>
 
-<h2>関連記事<h2>
-
+<h2>関連記事</h2>
+<ul class="list-group list-group-flush">
+<?php foreach($articles as $article): ?>
+  <li class="list-group-item"><a href="/posts/view/<?=$article['Post']['id']?>"><?= $article['Post']['title'] ?></a></li>
+<?php endforeach ?>  
+</ul>
+<div class="row more-wrapper">
+  <a class="col text-right" href="/posts/news/<?= $articles[0]['Category']['id'] ?>"><?= $articles[0]['Category']['name'] ?>の関連記事をもっと見る</a>
+</div>
 
  <?PHP echo $this->Html->script('modal.js'); ?>
 
  <?PHP echo $this->Html->script('good.js'); ?>
  
-
 
 

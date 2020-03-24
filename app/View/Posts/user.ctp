@@ -22,28 +22,12 @@
         <li class="nav-item">
           <a class="nav-link" id="item2-tab" href="/posts/user/<?= $user['User']['id'] ?>/good" role="tab" aria-controls="item2" >いいね順</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" id="item3-tab" href="#" role="tab" aria-controls="item3" >コメント</a>
-        </li>
       <?php elseif($arg == "good"):?>
         <li class="nav-item">
           <a class="nav-link" id="item1-tab" href="/posts/user/<?= $user['User']['id'] ?>/new" role="tab" aria-controls="item1" >新着順</a>
         </li>
         <li class="nav-item">
           <a class="nav-link  active" id="item2-tab" href="/posts/user/<?= $user['User']['id'] ?>/good" role="tab" aria-controls="item2" >いいね順</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" id="item3-tab" href="#" role="tab" aria-controls="item3" >コメント</a>
-        </li>
-      <?php elseif($arg == "comment"):?>
-        <li class="nav-item">
-          <a class="nav-link" id="item1-tab" href="/posts/user/<?= $user['User']['id'] ?>/new" role="tab" aria-controls="item1" >新着順</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" id="item2-tab" href="/posts/user/<?= $user['User']['id'] ?>/good" role="tab" aria-controls="item2" >いいね順</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" id="item3-tab" href="#" role="tab" aria-controls="item3" >コメント</a>
         </li>
       <?php endif?>
     </ul>

@@ -66,7 +66,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 							</li>
 						<?php endif;?>
 						<?php
-							// $session = $this->Session->read('Auth.User.id');
+							$session = $this->Session->read('Auth.User.id');
 							// if (isset($session)){
 							// 	echo '<li class="nav-item">';
 							// 	echo $this->Html->link('MyPage', array('controller' => 'profiles', 'action' => 'mypage', ), array('class' => 'nav-link'));
