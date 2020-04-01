@@ -1,17 +1,25 @@
 <?= $this->assign('title', "ランキング"); ?>
 <?PHP echo $this->Html->css('articles.css'); ?>
-<?= Debugger::dump($rankings); ?>
-<?= Debugger::dump($hoge); ?>
 
 
 <h1>記事ランキング</h1>
 <div class="row">
     <div class="col-md-2">
     <ul class="list-group">
-        <li><a href="/posts/rankings/total">総合</a></li>
+        <?php 
+          if ($category_name == "総合") {
+            echo '<li><a class="c-active" href="/posts/rankings/total">総合</a></li>';
+          } else {
+            echo '<li><a href="/posts/rankings/total">総合</a></li>';
+          }
+        ?>
         <?php
             foreach($category_list as $item){
-                echo '<li><a href="/posts/rankings/'.$item['Category']['id'].'">'.$item['Category']['name'].'</a></li>';
+                if ($item['Category']['name'] == $category_name){
+                    echo '<li><a class="c-active" href="/posts/rankings/'.$item['Category']['id'].'">'.$item['Category']['name'].'</a></li>';
+                } else {
+                    echo '<li><a href="/posts/rankings/'.$item['Category']['id'].'">'.$item['Category']['name'].'</a></li>';
+                }
             }
         ?>
     </ul>

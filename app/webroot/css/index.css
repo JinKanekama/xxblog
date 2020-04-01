@@ -202,6 +202,10 @@ p{
     padding: 10px 0 10px;
 }
 
+.ranking-more{
+    color: #333333;
+}
+
 /* お知らせ */
 .notice-contents{
     margin: 64px 0 0;

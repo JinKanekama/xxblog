@@ -9,6 +9,10 @@
     color: #757575;
 }
 
+.col-md-2 .c-active{
+    color: #428BCA;
+}
+
 h3{
     font-size: 20px;
 }
@@ -25,8 +29,12 @@ article p{
     margin: 0;   
 }
 
+article a{
+    color: #333333;
+}
+
 .col-md-2 {
-    padding: 40px 20px;
+    padding: 40px 15px;
 }
 
 .col-md-3{
@@ -34,11 +42,13 @@ article p{
 }
 
 .col-md-7{
-    padding: 40px 0;
+    padding: 40px 15px;
 }
 .col-md-7 .row{
     margin: 0;
 }
+
+
 
 
 /* 右側のコンテンツ */

@@ -1,5 +1,3 @@
-<h2>詳細検索</h2>
-
 <?php echo $this->Form->create('Post', array('url' => '/posts/searchBlogs'));?>  
   <div class="search"> 
   <?php
@@ -22,7 +20,9 @@
     'label' => false 
     ));  
     echo '</div>';
+    echo '<div class="button_wrapper">';
     echo '<button type="submit" class="btn btn-primary">検索</button>';
+    echo '</div>' ;
    ?>  
   </div>
 <?php echo $this->Form->end();?> 

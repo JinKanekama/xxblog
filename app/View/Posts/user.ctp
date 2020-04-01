@@ -1,4 +1,4 @@
-<?= $this->assign('title', $posts[0]['User']['username']."さんのページ"); ?>
+<?= $this->assign('title', $user['User']['username']."さんのページ"); ?>
 <?PHP echo $this->Html->css('user.css'); ?>
 
 <div class="row">
@@ -32,26 +32,26 @@
       <?php endif?>
     </ul>
     <div class="tab-content">
-        <?php foreach ($posts as $post): ?>
-          <article class="post-item border-bottom row">
-            <div class="col-1">
-            <?php 
-              if(isset($post['Image'][0])){
-                echo $this->CustomHtml->image('/files/image/name/'.$post['Image'][0]['image_dir'].'/thumb_'. $post['Image'][0]['name'], array('class' => 'w-100 rounded'));
-              }else {
-                echo $this->CustomHtml->image('hoge', array('class' => 'w-100 rounded'));
-              }
-            ?>
+      <?php foreach ($posts as $post): ?>
+        <article class="post-item border-bottom row">
+          <div class="col-1">
+          <?php 
+            if(isset($post['Image'][0])){
+              echo $this->CustomHtml->image('/files/image/name/'.$post['Image'][0]['image_dir'].'/thumb_'. $post['Image'][0]['name'], array('class' => 'w-100 rounded'));
+            }else {
+              echo $this->CustomHtml->image('hoge', array('class' => 'w-100 rounded'));
+            }
+          ?>
+          </div>
+          <div class="post_body col-11">
+            <a class="item_title" href="/posts/view/<?=$post['Post']['id']?>" >
+              <?= h($post['Post']['title']) ?>
+            </a>
+            <?php  $day = new DateTime($post['Post']['created']);?>
+            <p class="item_info"><?php echo 'by'.h($post['User']['username'])." ".'<span class="text-black-50">'.$day->format('m/d H時').'</span>'; ?></p>
             </div>
-            <div class="post_body col-11">
-              <a class="item_title" href="/posts/view/<?=$post['Post']['id']?>" >
-                <?= h($post['Post']['title']) ?>
-              </a>
-              <?php  $day = new DateTime($post['Post']['created']);?>
-              <p class="item_info"><?php echo 'by'.h($post['User']['username'])." ".'<span class="text-black-50">'.$day->format('m/d H時').'</span>'; ?></p>
-              </div>
-          </article>
-        <?php endforeach; ?>
+        </article>
+      <?php endforeach; ?>
       <?php echo $this->element('pager')?> 
     </div>
   </div>

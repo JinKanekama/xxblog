@@ -1,6 +1,7 @@
 <?php
     App::uses('AppModel', 'Model');
     App::uses('BlowfishPasswordHasher', 'Controller/Component/Auth');
+    
     // app/Model/User.php
     class User extends AppModel {
         public $actsAs = array('SoftDelete');
@@ -57,6 +58,16 @@
                 );
             }
             return true;
+        }
+
+        public function register($twitter_user){
+            $user = $this->find('first', array('conditions' => array('username' => $twitter_user['username'])));
+            if($user) {
+                $twitter_user['id'] = $user['User']['id'];
+            }
+            
+            $this->create();
+            $this->save(Array("User" => $twitter_user));
         }
 
     }

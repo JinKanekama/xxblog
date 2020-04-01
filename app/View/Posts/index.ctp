@@ -20,9 +20,9 @@
             ?>  
             <?= '<a href="/posts/view/'. $blog['Post']['id'] .'">' ?>
             <?php if($blog['Image'][0]){
-              echo $this->CustomHtml->image('/files/image/name/'. $blog['Image'][0]['image_dir'] .'/'.$blog['Image'][0]['name'], array('class'=>'d-block w-100 img-responsive rounded', 'width'=>'100%', 'height'=>'300px', 'alt'=>'スライド'));
+              echo $this->CustomHtml->image('/files/image/name/'. $blog['Image'][0]['image_dir'] .'/'.$blog['Image'][0]['name'], array('class'=>'d-block w-100 img-responsive rounded-lg', 'height'=>'300px', 'alt'=>'スライド'));
             } else {
-              echo $this->CustomHtml->image('hoge', array('class'=>'d-block w-100 img-responsive rounded', 'width'=>'100%', 'height'=>'300px', 'alt'=>'スライド'));
+              echo $this->CustomHtml->image('hoge', array('class'=>'d-block w-100 img-responsive rounded-lg', 'height'=>'300px', 'alt'=>'スライド'));
             }
             ?>
               <div class="carousel-caption d-none d-md-block w-100">

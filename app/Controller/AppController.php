@@ -41,10 +41,10 @@ class AppController extends Controller {
         'DebugKit.Toolbar',
         'Auth' => array(
             'authError' => '権限のない操作が要求されました',
-            'loginRedirect' => array(
-                'controller' => 'posts',
-                'action' => 'index'
-            ),
+			'loginRedirect' => array(
+				'controller' => 'posts',
+				'action' => 'index',
+			),
             'logoutRedirect' => array(
                 'controller' => 'users',
                 'action' => 'login'
@@ -52,10 +52,10 @@ class AppController extends Controller {
             'authenticate' => array(
                 'Form' => array(
                     'passwordHasher' => 'Blowfish'
-                )
+                ),
             ),
             'authorize' => array('Controller')
-        )
+        ),
     );
 
     public function isAuthorized($user) {

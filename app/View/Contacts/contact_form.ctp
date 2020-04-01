@@ -16,6 +16,5 @@ echo '<button type="submit" class="btn btn-primary">送信</button>';
 echo $this->Form->end();
 ?>
 
-<?php debug($massage) ?>
 
 

@@ -8,6 +8,10 @@ h2{
     margin: 10px 0;
 }
 
+a{
+    color:#333333;
+}
+
 #content .center{
     padding: 30px;
 }
@@ -34,7 +38,7 @@ h2{
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 2;
+    z-index: 30;
 }
 
 .left-content {

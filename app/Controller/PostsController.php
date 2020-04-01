@@ -431,10 +431,11 @@
             $this->Post->recursive = 2;
             
             if ($category_id == "total") {
-                //$this->Post->Good->virtualFields['Total'] = 'count(Good.post_id)';
+                $this->Post->Good->virtualFields['Total'] = 'count(Good.post_id)';
                 $where = array(
                     'fields' => array(
-                        'Post.id',
+                        'Post.*',
+                        'count(Good.post_id) AS Good__Total',
                     ),
                     'joins' => array(
                         array(
@@ -445,25 +446,22 @@
                                 'Post.id = Good.post_id'
                             )
                             ),
-
                     ),
-                    'condition' => array(
-                        'Good.post_id' => NULL
+                    'group' => 'Good.post_id',
+                    'conditions' => array(
+                        'NOT' => array(
+                            'Good.post_id' => NULL
+                        )
                     ),
                     'limit' => 10,
                     'order' => array(
-                        'Post.created' => 'desc'
+                        'Good.Total' => 'desc'
                     )
                 );
                 // Paginator に条件を設定
                 $this->paginate = $where;
                 // データの取得
-                $hoge = $this->Paginator->paginate();
-                $this->set($hoge);
-
-                $result1 = $this->Post->query('select posts.id from posts left join goods on posts.id = goods.post_id group by goods.post_id having goods.post_id is not null;');
-                $result2 = $this->Post->query('select posts.id from posts left join goods on posts.id = goods.post_id where goods.post_id is NULL order by posts.created desc;');
-                $rankings = array_merge($result1, $result2);
+                $rankings = $this->Paginator->paginate();
                 $category_name = "総合";
             } else {
                 $this->Post->Good->virtualFields['Total'] = 'count(Good.post_id)';
@@ -484,9 +482,9 @@
                     ),
                     'conditions' => array(
                         'Category.id' => $category_id,
-                        // 'NOT' => array(
-                        //     'Good.post_id' => NULL
-                        // )
+                        'NOT' => array(
+                            'Good.post_id' => NULL
+                        )
                     ),
                     'group' => 'Good.post_id',
                     'limit' => 10,

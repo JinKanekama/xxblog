@@ -4,13 +4,22 @@
 <div class="row">
     <div class="col-md-2">
     <ul>
-        <li><a href="/posts/news/total">総合</a></li>
+        <?php 
+          if ($category_name == "総合") {
+            echo '<li><a class="c-active" href="/posts/news/total">総合</a></li>';
+          } else {
+            echo '<li><a href="/posts/news/total">総合</a></li>';
+          }
+        ?>
         <?php
             foreach($category_list as $item){
-                echo '<li><a href="/posts/news/'.$item['Category']['id'].'">'.$item['Category']['name'].'</a></li>';
+                if ($item['Category']['name'] == $category_name){
+                    echo '<li><a class="c-active" href="/posts/news/'.$item['Category']['id'].'">'.$item['Category']['name'].'</a></li>';
+                } else {
+                    echo '<li><a href="/posts/news/'.$item['Category']['id'].'">'.$item['Category']['name'].'</a></li>';
+                }
             }
         ?>
-
     </ul>
     </div>
     <div class="news-contents col-md-7">

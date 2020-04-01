@@ -1,0 +1,3 @@
+<?php 
+Debugger::dump($twitter);
+?>

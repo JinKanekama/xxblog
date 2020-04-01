@@ -38,7 +38,7 @@ class EmailConfig {
 
 	public $default = array(
 		'transport' => 'Mail',
-		'from' => 'j_kanekama@funteam.co.jp',
+		'from' => 'kanekama@mail.gr.jp',
 		//'charset' => 'utf-8',
 		//'headerCharset' => 'utf-8',
 	);

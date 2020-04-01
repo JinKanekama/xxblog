@@ -20,3 +20,10 @@ echo '</div>';
 </div>
 
 <?php echo $this->Html->link('新規登録', array('controller' => 'users', 'action' => 'add') ); ?>
+
+<?php echo $this->Html->link('twitter認証', array('controller' => 'users', 'action' => 'twitter') ); ?>
+<?php
+
+echo Debugger::dump($this->Session->read('twitter'));
+
+?>

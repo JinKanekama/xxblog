@@ -2,18 +2,18 @@
 <?= $this->assign('title', '検索結果'); ?>
 <?PHP echo $this->Html->css('searchBlogs.css'); ?>
 
-<h1>検索画面</h1>
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-8 result-contents">
+    <h1>検索結果</h1>
         <?php foreach ($posts as $post): ?>
             <article class="post-item border-top border-bottom row">
                 <div class="col-2">
                     <a href="/posts/user/<?=$post['User']['id']?>">
                     <?php 
-                        if($post['User']['Icon'][0]){
+                        if(isset($post['User']['Icon'][0])){
                             echo $this->CustomHtml->image('/files/icon/name/'.$post['User']['Icon'][0]['icon_dir'].'/thumb_'. $post['User']['Icon'][0]['name'], array('class' => 'w-100 rounded'));
                         }else {
-                            echo $this->CustomHtml->image('hoge', array('class' => 'rounded'));
+                            echo $this->CustomHtml->image('hoge', array('class' => 'w-100 rounded'));
                         }
                     ?>
                     </a>
