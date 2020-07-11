@@ -29,6 +29,11 @@ a{
 .display-wrapper img {
     border-radius: 10px;
 }
+
+.image-contents{
+    padding: 0 16px;
+}
+
 /* ポップアップ部 */
 .popup {
     display: none;

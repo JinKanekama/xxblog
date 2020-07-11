@@ -21882,3 +21882,210 @@ Stack Trace:
 #11 /var/www/html/blogapp/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest))
 #12 /var/www/html/blogapp/app/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
 #13 {main}
+2020-04-11 12:26:01 Error: [MissingConnectionException] Database connection "Mysql" is missing, or could not be created.
+Exception Attributes: array (
+  'class' => 'Mysql',
+  'message' => 'SQLSTATE[HY000] [2002] No such file or directory',
+  'enabled' => true,
+)
+Request URL: /posts/view/131
+Stack Trace:
+#0 /var/www/html/blogapp/lib/Cake/Model/Datasource/DboSource.php(278): Mysql->connect()
+#1 /var/www/html/blogapp/lib/Cake/Model/ConnectionManager.php(105): DboSource->__construct(Array)
+#2 /var/www/html/blogapp/lib/Cake/Model/Model.php(3659): ConnectionManager::getDataSource('default')
+#3 /var/www/html/blogapp/lib/Cake/Model/Model.php(1162): Model->setDataSource('default')
+#4 /var/www/html/blogapp/lib/Cake/Model/Model.php(3686): Model->setSource('posts')
+#5 /var/www/html/blogapp/lib/Cake/Model/Model.php(1394): Model->getDataSource()
+#6 /var/www/html/blogapp/lib/Cake/Model/Model.php(1490): Model->schema()
+#7 /var/www/html/blogapp/app/Model/Behavior/SoftDeleteBehavior.php(54): Model->hasField('deleted')
+#8 /var/www/html/blogapp/lib/Cake/Model/BehaviorCollection.php(145): SoftDeleteBehavior->setup(Object(Post), Array)
+#9 /var/www/html/blogapp/lib/Cake/Model/BehaviorCollection.php(66): BehaviorCollection->load('SoftDelete', Array)
+#10 /var/www/html/blogapp/lib/Cake/Model/Model.php(781): BehaviorCollection->init('Post', Array)
+#11 [internal function]: Model->__construct(NULL)
+#12 /var/www/html/blogapp/lib/Cake/Utility/ClassRegistry.php(169): ReflectionClass->newInstance(Array)
+#13 /var/www/html/blogapp/lib/Cake/Controller/Controller.php(746): ClassRegistry::init('Post')
+#14 /var/www/html/blogapp/lib/Cake/Controller/Controller.php(376): Controller->loadModel('Post')
+#15 /var/www/html/blogapp/lib/Cake/Controller/Controller.php(414): Controller->__isset('Post')
+#16 /var/www/html/blogapp/app/Controller/PostsController.php(247): Controller->__get('Post')
+#17 [internal function]: PostsController->view('131')
+#18 /var/www/html/blogapp/lib/Cake/Controller/Controller.php(499): ReflectionMethod->invokeArgs(Object(PostsController), Array)
+#19 /var/www/html/blogapp/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#20 /var/www/html/blogapp/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(PostsController), Object(CakeRequest))
+#21 /var/www/html/blogapp/app/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#22 {main}
+2020-04-11 12:26:01 Error: [MissingConnectionException] Database connection "Mysql" is missing, or could not be created.
+Exception Attributes: array (
+  'class' => 'Mysql',
+  'message' => 'SQLSTATE[HY000] [2002] No such file or directory',
+  'enabled' => true,
+)
+Request URL: /posts/view/131
+Stack Trace:
+#0 /var/www/html/blogapp/lib/Cake/Model/Datasource/DboSource.php(278): Mysql->connect()
+#1 /var/www/html/blogapp/lib/Cake/Model/ConnectionManager.php(105): DboSource->__construct(Array)
+#2 /var/www/html/blogapp/lib/Cake/Model/Model.php(3659): ConnectionManager::getDataSource('default')
+#3 /var/www/html/blogapp/lib/Cake/Model/Model.php(1162): Model->setDataSource('default')
+#4 /var/www/html/blogapp/lib/Cake/Model/Model.php(3686): Model->setSource('posts')
+#5 /var/www/html/blogapp/lib/Cake/Model/Model.php(1394): Model->getDataSource()
+#6 /var/www/html/blogapp/lib/Cake/Model/Model.php(1490): Model->schema()
+#7 /var/www/html/blogapp/app/Model/Behavior/SoftDeleteBehavior.php(54): Model->hasField('deleted')
+#8 /var/www/html/blogapp/lib/Cake/Model/BehaviorCollection.php(145): SoftDeleteBehavior->setup(Object(Post), Array)
+#9 /var/www/html/blogapp/lib/Cake/Model/BehaviorCollection.php(66): BehaviorCollection->load('SoftDelete', Array)
+#10 /var/www/html/blogapp/lib/Cake/Model/Model.php(781): BehaviorCollection->init('Post', Array)
+#11 [internal function]: Model->__construct(NULL)
+#12 /var/www/html/blogapp/lib/Cake/Utility/ClassRegistry.php(169): ReflectionClass->newInstance(Array)
+#13 /var/www/html/blogapp/lib/Cake/Controller/Controller.php(746): ClassRegistry::init('Post')
+#14 /var/www/html/blogapp/lib/Cake/Controller/Controller.php(376): Controller->loadModel('Post')
+#15 /var/www/html/blogapp/lib/Cake/Controller/Controller.php(414): Controller->__isset('Post')
+#16 /var/www/html/blogapp/app/Controller/PostsController.php(247): Controller->__get('Post')
+#17 [internal function]: PostsController->view('131')
+#18 /var/www/html/blogapp/lib/Cake/Controller/Controller.php(499): ReflectionMethod->invokeArgs(Object(PostsController), Array)
+#19 /var/www/html/blogapp/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#20 /var/www/html/blogapp/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(PostsController), Object(CakeRequest))
+#21 /var/www/html/blogapp/app/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#22 {main}
+2020-04-11 14:52:55 Error: [ArgumentCountError] Too few arguments to function PostsController::user(), 1 passed and exactly 2 expected
+Request URL: /posts/user/5
+Stack Trace:
+#0 [internal function]: PostsController->user('5')
+#1 /var/www/html/blogapp/lib/Cake/Controller/Controller.php(499): ReflectionMethod->invokeArgs(Object(PostsController), Array)
+#2 /var/www/html/blogapp/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#3 /var/www/html/blogapp/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(PostsController), Object(CakeRequest))
+#4 /var/www/html/blogapp/app/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#5 {main}
+2020-04-11 14:56:00 Error: [MissingControllerException] Controller class RankingsController could not be found.
+Exception Attributes: array (
+  'class' => 'RankingsController',
+  'plugin' => NULL,
+)
+Request URL: /rankings
+Stack Trace:
+#0 /var/www/html/blogapp/app/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-05-21 16:12:36 Error: [ArgumentCountError] Too few arguments to function PostsController::user(), 1 passed and exactly 2 expected
+Request URL: /posts/user/1
+Stack Trace:
+#0 [internal function]: PostsController->user('1')
+#1 /var/www/html/blogapp/lib/Cake/Controller/Controller.php(499): ReflectionMethod->invokeArgs(Object(PostsController), Array)
+#2 /var/www/html/blogapp/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#3 /var/www/html/blogapp/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(PostsController), Object(CakeRequest))
+#4 /var/www/html/blogapp/app/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#5 {main}
+2020-05-21 16:12:42 Error: [ArgumentCountError] Too few arguments to function PostsController::user(), 1 passed and exactly 2 expected
+Request URL: /posts/user/6
+Stack Trace:
+#0 [internal function]: PostsController->user('6')
+#1 /var/www/html/blogapp/lib/Cake/Controller/Controller.php(499): ReflectionMethod->invokeArgs(Object(PostsController), Array)
+#2 /var/www/html/blogapp/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#3 /var/www/html/blogapp/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(PostsController), Object(CakeRequest))
+#4 /var/www/html/blogapp/app/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#5 {main}
+2020-05-21 16:12:59 Error: [ArgumentCountError] Too few arguments to function PostsController::user(), 1 passed and exactly 2 expected
+Request URL: /posts/user/1
+Stack Trace:
+#0 [internal function]: PostsController->user('1')
+#1 /var/www/html/blogapp/lib/Cake/Controller/Controller.php(499): ReflectionMethod->invokeArgs(Object(PostsController), Array)
+#2 /var/www/html/blogapp/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#3 /var/www/html/blogapp/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(PostsController), Object(CakeRequest))
+#4 /var/www/html/blogapp/app/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#5 {main}
+2020-05-28 19:06:16 Error: [MissingConnectionException] Database connection "Mysql" is missing, or could not be created.
+Exception Attributes: array (
+  'class' => 'Mysql',
+  'message' => 'SQLSTATE[HY000] [2002] No such file or directory',
+  'enabled' => true,
+)
+Request URL: /
+Stack Trace:
+#0 /var/www/html/blogapp/lib/Cake/Model/Datasource/DboSource.php(278): Mysql->connect()
+#1 /var/www/html/blogapp/lib/Cake/Model/ConnectionManager.php(105): DboSource->__construct(Array)
+#2 /var/www/html/blogapp/lib/Cake/Model/Model.php(3659): ConnectionManager::getDataSource('default')
+#3 /var/www/html/blogapp/lib/Cake/Model/Model.php(1162): Model->setDataSource('default')
+#4 /var/www/html/blogapp/lib/Cake/Model/Model.php(3686): Model->setSource('posts')
+#5 /var/www/html/blogapp/lib/Cake/Model/Model.php(1394): Model->getDataSource()
+#6 /var/www/html/blogapp/lib/Cake/Model/Model.php(1490): Model->schema()
+#7 /var/www/html/blogapp/app/Model/Behavior/SoftDeleteBehavior.php(54): Model->hasField('deleted')
+#8 /var/www/html/blogapp/lib/Cake/Model/BehaviorCollection.php(145): SoftDeleteBehavior->setup(Object(Post), Array)
+#9 /var/www/html/blogapp/lib/Cake/Model/BehaviorCollection.php(66): BehaviorCollection->load('SoftDelete', Array)
+#10 /var/www/html/blogapp/lib/Cake/Model/Model.php(781): BehaviorCollection->init('Post', Array)
+#11 [internal function]: Model->__construct(NULL)
+#12 /var/www/html/blogapp/lib/Cake/Utility/ClassRegistry.php(169): ReflectionClass->newInstance(Array)
+#13 /var/www/html/blogapp/lib/Cake/Controller/Controller.php(746): ClassRegistry::init('Post')
+#14 /var/www/html/blogapp/lib/Cake/Controller/Controller.php(376): Controller->loadModel('Post')
+#15 /var/www/html/blogapp/lib/Cake/Controller/Controller.php(414): Controller->__isset('Post')
+#16 /var/www/html/blogapp/app/Controller/PostsController.php(86): Controller->__get('Post')
+#17 [internal function]: PostsController->index()
+#18 /var/www/html/blogapp/lib/Cake/Controller/Controller.php(499): ReflectionMethod->invokeArgs(Object(PostsController), Array)
+#19 /var/www/html/blogapp/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#20 /var/www/html/blogapp/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(PostsController), Object(CakeRequest))
+#21 /var/www/html/blogapp/app/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#22 {main}
+2020-05-28 19:09:36 Error: [MissingControllerException] Controller class LoginController could not be found.
+Exception Attributes: array (
+  'class' => 'LoginController',
+  'plugin' => NULL,
+)
+Request URL: /login
+Stack Trace:
+#0 /var/www/html/blogapp/app/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-05-28 19:09:44 Error: [MissingControllerException] Controller class LoginController could not be found.
+Exception Attributes: array (
+  'class' => 'LoginController',
+  'plugin' => NULL,
+)
+Request URL: /login
+Stack Trace:
+#0 /var/www/html/blogapp/app/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-05-28 20:01:51 Error: [MissingControllerException] Controller class MypageController could not be found.
+Exception Attributes: array (
+  'class' => 'MypageController',
+  'plugin' => NULL,
+)
+Request URL: /mypage/1
+Stack Trace:
+#0 /var/www/html/blogapp/app/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-05-28 20:02:20 Error: [MissingControllerException] Controller class ProfileController could not be found.
+Exception Attributes: array (
+  'class' => 'ProfileController',
+  'plugin' => NULL,
+)
+Request URL: /profile/1
+Stack Trace:
+#0 /var/www/html/blogapp/app/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-05-28 20:02:52 Error: [MissingControllerException] Controller class ProfileController could not be found.
+Exception Attributes: array (
+  'class' => 'ProfileController',
+  'plugin' => NULL,
+)
+Request URL: /profile/mypage/1
+Stack Trace:
+#0 /var/www/html/blogapp/app/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-06-02 04:14:38 Error: [MissingViewException] View file "Users/edit.ctp" is missing.
+Exception Attributes: array (
+  'file' => 'Users/edit.ctp',
+)
+Request URL: /users/edit/6
+Stack Trace:
+#0 /var/www/html/blogapp/lib/Cake/View/View.php(470): View->_getViewFileName('Users/edit')
+#1 /var/www/html/blogapp/lib/Cake/Controller/Controller.php(968): View->render(NULL, NULL)
+#2 /var/www/html/blogapp/lib/Cake/Routing/Dispatcher.php(200): Controller->render()
+#3 /var/www/html/blogapp/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest))
+#4 /var/www/html/blogapp/app/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#5 {main}
+2020-06-02 04:14:41 Error: [MissingViewException] View file "Users/edit.ctp" is missing.
+Exception Attributes: array (
+  'file' => 'Users/edit.ctp',
+)
+Request URL: /users/edit/5
+Stack Trace:
+#0 /var/www/html/blogapp/lib/Cake/View/View.php(470): View->_getViewFileName('Users/edit')
+#1 /var/www/html/blogapp/lib/Cake/Controller/Controller.php(968): View->render(NULL, NULL)
+#2 /var/www/html/blogapp/lib/Cake/Routing/Dispatcher.php(200): Controller->render()
+#3 /var/www/html/blogapp/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest))
+#4 /var/www/html/blogapp/app/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#5 {main}

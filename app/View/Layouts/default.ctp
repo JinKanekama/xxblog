@@ -67,11 +67,11 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 						<?php endif;?>
 						<?php
 							$session = $this->Session->read('Auth.User.id');
-							// if (isset($session)){
-							// 	echo '<li class="nav-item">';
-							// 	echo $this->Html->link('MyPage', array('controller' => 'profiles', 'action' => 'mypage', ), array('class' => 'nav-link'));
-							// 	echo '</li>';
-							// } 
+							 if (isset($session)){
+							 	echo '<li class="nav-item">';
+							 	echo $this->Html->link('MyPage', array('controller' => 'profiles', 'action' => 'mypage', ), array('class' => 'nav-link'));
+							 	echo '</li>';
+							 } 
 						?>
 					</ul>
 					<ul class="navbar-nav nav-right">
@@ -110,10 +110,10 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 						<?php echo $this->Html->link('お問い合わせ', array('controller' => 'contacts', 'action' => 'contactForm', ), array('class' => 'nav-link')); ?>
 					</li> 
 					<li class="nav-item">
-						<?php echo $this->Html->link('利用規約', array('controller' => '', 'action' => '', ), array('class' => 'nav-link')); ?>
+						<?php echo $this->Html->link('利用規約', array('controller' => 'posts', 'action' => 'index', ), array('class' => 'nav-link')); ?>
 					</li> 
 					<li class="nav-item">
-						<?php echo $this->Html->link('ヘルプ', array('controller' => '', 'action' => '', ), array('class' => 'nav-link')); ?>
+						<?php echo $this->Html->link('ヘルプ', array('controller' => 'posts', 'action' => 'index', ), array('class' => 'nav-link')); ?>
 					</li> 
 				</ul>
 			</nav>

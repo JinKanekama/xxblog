@@ -1,3 +1,13 @@
 h2 {
     color: #428BCA;
+    padding: 8px;
+}
+
+.button-wrapper{
+    text-align: center;
+    margin: 0;
+}
+
+.fa-twitter{
+    color: #1DA1F2;
 }

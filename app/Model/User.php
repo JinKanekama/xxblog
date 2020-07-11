@@ -60,10 +60,13 @@
             return true;
         }
 
+        //sns連携登録処理
         public function register($twitter_user){
-            $user = $this->find('first', array('conditions' => array('username' => $twitter_user['username'])));
+            $user = $this->find('first', array('conditions' => array('token_key' => $twitter_user['token_key'])));
+            //更新処理の設定
             if($user) {
                 $twitter_user['id'] = $user['User']['id'];
+                unset($twitter_user['username']);
             }
             
             $this->create();

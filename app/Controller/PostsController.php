@@ -236,9 +236,7 @@
             }
 
         //詳細表示
-        public function view($id = null) {
-            //time計測 
-            $time_start = microtime(true);
+        public function view($id = null) { 
 
             //ブログ取得
             if (!$id) {
@@ -268,8 +266,6 @@
             ));
             $this->set('goodFlag', $goodFlag);
 
-            $time = microtime(true) - $time_start;
-            $this->Flash->success(__($time));
         }
 
         //投稿

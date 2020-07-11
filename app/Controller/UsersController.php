@@ -35,6 +35,7 @@
 
         public function add() {
             if ($this->request->is('post')) {
+                $this->request->data['User']['role'] = 'author';
                 $this->User->create();
                 if ($this->User->save($this->request->data)) {
                     $this->Flash->success(__('ユーザーを登録しました。'));
@@ -103,21 +104,11 @@
         }
 
         //twitter認証
-
-        // public function twitter(){
-        //     $requestToken = $this->_createConsumer()->getRequestToken(
-        //         'https://api.twitter.com/oauth/request_token',// エンドポイントとも言うんでしょうかね
-        //         'http://hogehoge.plusr.co.jp/users/register'// 自分のサイトのユーザ登録用のURL...(a)
-        //     );
-        //     $this->Session->write('request_token', $requestToken);// セッションにリクエストトークンを保存
-        //     $this->redirect('https://api.twitter.com/oauth/authorize?oauth_token=' . $requestToken->key);// twitter側にリダイレクト
-        // }
-
         public function twitter() {
             $client = $this->createClient();
+            //リクエストトークンの取得
             $requestToken = $client->getRequestToken(
                 'https://api.twitter.com/oauth/request_token', 'http://xxblog.test/users/callback');
-        
             if ($requestToken) {
               $this->Session->write('twitter_request_token', $requestToken);
               $this->redirect('https://api.twitter.com/oauth/authorize?oauth_token=' . $requestToken->key);
@@ -126,43 +117,16 @@
             }
         }
 
-         //   public function register()
-        //   {
-        //       $consumer = $this->_createConsumer();
-        //       $token    = $consumer->getAccessToken(
-        //           'https://api.twitter.com/oauth/access_token',
-        //           $this->Session->read('request_token')
-        //       );// セッションに保存してあるリクエストトークンをセットしてアクセストークンを要求
-        //       if($token != ''){
-        //           $twitter = $consumer->get(
-        //               $token->key,
-        //               $token->secret,
-        //               'http://twitter.com/account/verify_credentials.json',
-        //               array()
-        //           );// twitter上におけるユーザの情報を取得（optional）
-        //           $twitter = json_decode($twitter, true);
-                 
-        //           // 登録 or 更新 (内部でどちらか判定して保存)...(b)
-        //           $registeredId = $this->User->register(array(
-        //               'twitter_id'   => $twitter['id_str'],
-        //               'twitter_name' => $twitter['screen_name'],
-        //               'token_key'    => $token->key,// ユーザのトークン
-        //               'token_secret' => $token->secret,// ユーザのシークレット
-        //           ));
-                 
-        //           $user['User']["token_key"]    = $token->key;
-        //           $user['User']["token_secret"] = $token->secret;
-        //           $this->Auth->login($user);
-        //       }
-        //   }
 
         public function callback() {
             $requestToken = $this->Session->read('twitter_request_token');
             $client = $this->createClient();
+            //アクセストークンの取得
             $accessToken = $client->getAccessToken('https://api.twitter.com/oauth/access_token', $requestToken);
 
             if ($accessToken) {
               //$client->post($accessToken->key, $accessToken->secret, 'https://api.twitter.com/1.1/statuses/update.json', array('status' => 'hello'));
+                //twitterの情報の取得
                 $twitter = $client->get(
                             $accessToken->key,
                             $accessToken->secret,
@@ -184,7 +148,7 @@
                 );
                 $this->User->register($user);
 
-                $login_user = $this->User->find('first', array('conditions' => array('username' => $twitter['screen_name'])));
+                $login_user = $this->User->find('first', array('conditions' => array('token_key' => $accessToken->key)));
                 $this->Auth->login($login_user['User']);
                 $this->redirect($this->Auth->Redirect());
             }
