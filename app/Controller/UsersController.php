@@ -124,7 +124,7 @@
             //アクセストークンの取得
             $accessToken = $client->getAccessToken('https://api.twitter.com/oauth/access_token', $requestToken);
 
-            if ($accessToken) {
+            if ($accessToken != "") {
               //$client->post($accessToken->key, $accessToken->secret, 'https://api.twitter.com/1.1/statuses/update.json', array('status' => 'hello'));
                 //twitterの情報の取得
                 $twitter = $client->get(
@@ -151,6 +151,9 @@
                 $login_user = $this->User->find('first', array('conditions' => array('token_key' => $accessToken->key)));
                 $this->Auth->login($login_user['User']);
                 $this->redirect($this->Auth->Redirect());
+            } else {
+                //ユーザーがtwitterアカウントへのアクセスを許可しなかった場合、トップページへ遷移
+                $this->redirect(array('controller'=>'posts', 'action'=>'index')) ;
             }
             exit;
         }

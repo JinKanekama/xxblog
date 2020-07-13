@@ -2,7 +2,6 @@
 <?PHP echo $this->Html->css('index.css'); ?>
 <?= $this->assign('title', 'XXブログ'); ?>
 
-
 <!--スライドショー  -->
 <div id="carouselOption1" class="carousel slide" data-ride="carousel">
   <!-- インジケータの設定 -->
